@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bodega UAIB v6 · Hospital Las Higueras</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+:root {
+  --navy:#0b1f3a;--navy2:#122a4e;--navy3:#1a3660;
+  --teal:#0ea5a0;--teal2:#14c4be;--teal-faint:#e6f8f8;
+  --white:#ffffff;--gray50:#f8fafc;--gray100:#f1f5f9;--gray200:#e2e8f0;
+  --gray300:#cbd5e1;--gray400:#94a3b8;--gray500:#64748b;--gray700:#334155;--gray900:#0f172a;
+  --green:#059669;--green-faint:#ecfdf5;
+  --red:#dc2626;--red-faint:#fef2f2;
+  --amber:#d97706;--amber-faint:#fffbeb;
+  --blue:#2563eb;--blue-faint:#eff6ff;
+  --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+  --shadow-md:0 8px 32px rgba(0,0,0,.1),0 4px 12px rgba(0,0,0,.06);
+  --r:12px;--r-sm:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--gray50);color:var(--gray900);min-height:100vh}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 50%,var(--navy3) 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(14,165,160,.18) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(212,168,67,.1) 0%,transparent 60%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px}
+.hero-inner{position:relative;max-width:780px;margin:0 auto;padding:24px 24px 20px;display:flex;align-items:center;gap:16px}
+.hero-ico{width:48px;height:48px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.hero-txt{color:white;flex:1}
+.hero-txt h1{font-size:17px;font-weight:700;letter-spacing:-.3px;line-height:1.2}
+.hero-txt .sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
+.hero-txt .tag{display:inline-flex;align-items:center;gap:5px;margin-top:5px;background:rgba(14,165,160,.2);border:1px solid rgba(14,165,160,.4);color:var(--teal2);padding:2px 10px;border-radius:20px;font-size:11px;font-weight:500}
+.cfg-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:var(--r-sm);color:rgba(255,255,255,.8);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap}
+.cfg-btn:hover{background:rgba(255,255,255,.15);color:white}
+
+/* CONTENT */
+.content{max-width:780px;margin:0 auto;padding:20px 24px 50px;display:flex;flex-direction:column;gap:14px}
+
+/* CARD */
+.card{background:white;border-radius:var(--r);border:1px solid var(--gray200);box-shadow:var(--shadow-sm)}
+.card-hdr{padding:12px 18px;border-bottom:1px solid var(--gray100);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:11px;font-weight:700;color:var(--gray500);display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:.07em}
+.ctdot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.card-bdy{padding:16px 18px}
+
+/* TABS — 3 columns */
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:white;border:1px solid var(--gray200);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+.tab{padding:10px 8px;border:none;background:transparent;color:var(--gray500);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;border-bottom:3px solid transparent;line-height:1.3;text-align:center}
+.tab+.tab{border-left:1px solid var(--gray200)}
+.tab:hover{background:var(--gray50);color:var(--gray700)}
+.tab.active-guia{background:linear-gradient(to bottom,var(--blue-faint),#f8fbff);color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.tab.active-cajas{background:linear-gradient(to bottom,var(--green-faint),#f0fdf4);color:var(--green);border-bottom-color:var(--green);font-weight:600}
+.tab.active-retiro{background:linear-gradient(to bottom,var(--red-faint),#fff5f5);color:var(--red);border-bottom-color:var(--red);font-weight:600}
+
+/* FORM */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fl{font-size:11px;font-weight:700;color:var(--gray500);text-transform:uppercase;letter-spacing:.07em}
+select{width:100%;background:var(--gray50);border:1.5px solid var(--gray200);border-radius:var(--r-sm);color:var(--gray900);font-family:var(--font);font-size:13px;padding:9px 32px 9px 12px;outline:none;cursor:pointer;transition:all .2s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:10px}
+select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,165,160,.12);background-color:white}
+select:disabled{opacity:.45;cursor:not-allowed}
+select option{background:white}
+
+/* UPLOAD — SINGLE PHOTO */
+.upload-zone{border:2px dashed var(--gray300);border-radius:var(--r);min-height:180px;cursor:pointer;transition:all .25s;background:var(--gray50);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.upload-zone:hover{border-color:var(--teal);background:var(--teal-faint)}
+.upload-zone.drag{border-color:var(--teal);background:var(--teal-faint)}
+.upload-zone.has-photo{border-style:solid;border-color:var(--gray300);background:var(--gray900)}
+.up-placeholder{text-align:center;padding:24px;pointer-events:none}
+.up-icon{font-size:36px;margin-bottom:10px}
+.up-title{font-size:14px;font-weight:600;color:var(--gray700);margin-bottom:4px}
+.up-sub{font-size:12px;color:var(--gray400)}
+.photo-preview{width:100%;max-height:340px;object-fit:contain;display:block}
+.photo-change{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.65);color:white;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:6px 14px;font-size:12px;font-family:var(--font);font-weight:500;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px)}
+.photo-change:hover{background:rgba(0,0,0,.85)}
+.upload-input{display:none}
+
+/* BUTTONS */
+.analyze-btn{width:100%;padding:14px 20px;border-radius:var(--r);border:none;font-family:var(--font);font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:var(--shadow)}
+.analyze-btn.guia{background:linear-gradient(135deg,#3b82f6,#1e40af);color:white}
+.analyze-btn.cajas{background:linear-gradient(135deg,#10b981,#047857);color:white}
+.analyze-btn.retiro{background:linear-gradient(135deg,#dc2626,#b91c1c);color:white}
+.analyze-btn:not(:disabled):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.analyze-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+.loading{display:flex;align-items:center;justify-content:center;gap:14px;padding:22px;background:white;border-radius:var(--r);border:1px solid var(--gray200);box-shadow:var(--shadow-sm);color:var(--gray500);font-size:14px}
+.spinner{width:20px;height:20px;border:2.5px solid var(--gray200);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* RESULT */
+.result-card{background:white;border:1px solid var(--gray200);border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden;animation:fadeUp .3s ease}
+.result-hdr{padding:12px 18px;background:linear-gradient(to right,var(--gray50),white);border-bottom:1px solid var(--gray100);display:flex;align-items:center;justify-content:space-between}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}
+.status-pill.ok{background:var(--green-faint);color:var(--green);border:1px solid #86efac}
+.status-pill.err{background:var(--red-faint);color:var(--red);border:1px solid #fca5a5}
+.status-pulse{width:7px;height:7px;border-radius:50%;background:currentColor}
+.result-bdy{padding:16px 18px;display:flex;flex-direction:column;gap:0}
+.sec-title{font-size:10px;font-weight:700;color:var(--gray400);text-transform:uppercase;letter-spacing:.1em;padding:10px 0 8px;border-top:1px solid var(--gray100);margin-top:4px}
+.sec-title:first-child{border-top:none;padding-top:0;margin-top:0}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+.info-item{background:var(--gray50);border:1px solid var(--gray100);border-radius:var(--r-sm);padding:8px 12px}
+.info-key{font-size:10px;color:var(--gray400);font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.info-val{font-size:13px;color:var(--gray900);font-weight:500;margin-top:2px}
+.kit-card{background:var(--gray50);border:1px solid var(--gray200);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:8px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
+.kit-name{font-size:13px;font-weight:600;color:var(--gray900)}
+.kit-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.kit-tag{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:2px 8px;border-radius:4px;font-family:var(--mono);font-weight:500}
+.kit-tag.qty{background:#dbeafe;color:#1d4ed8}
+.kit-tag.qrec{background:var(--green-faint);color:#15803d}
+.kit-tag.lote{background:var(--gray100);color:var(--gray500)}
+.kit-tag.motivo{background:var(--red-faint);color:var(--red)}
+.kit-qty-big{font-size:26px;font-weight:700;font-family:var(--mono);color:var(--teal);line-height:1;text-align:right}
+.kit-qty-big.red{color:var(--red)}
+.kit-qty-lbl{font-size:10px;color:var(--gray400);text-align:right;margin-top:2px}
+.badge-exp{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:6px;font-size:11px;font-family:var(--mono);font-weight:500;margin-top:6px}
+.badge-ok{background:var(--green-faint);color:var(--green);border:1px solid #86efac}
+.badge-warn{background:var(--amber-faint);color:var(--amber);border:1px solid #fcd34d}
+.badge-bad{background:var(--red-faint);color:var(--red);border:1px solid #fca5a5}
+
+.save-btn{width:100%;padding:13px 20px;border-radius:var(--r);border:1.5px solid var(--gray200);background:white;color:var(--gray700);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:var(--shadow-sm)}
+.save-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-faint)}
+.save-btn.saved{border-color:var(--green);color:var(--green);background:var(--green-faint)}
+.save-btn.error{border-color:var(--red);color:var(--red);background:var(--red-faint)}
+.save-btn:disabled{opacity:.7;cursor:default}
+
+.alert{padding:10px 14px;border-radius:var(--r-sm);font-size:13px;display:none;font-weight:500}
+.alert.show{display:block}
+.alert-warn{background:var(--amber-faint);border:1px solid #fcd34d;color:#92400e}
+.alert-err{background:var(--red-faint);border:1px solid #fca5a5;color:var(--red)}
+
+/* SHEET BADGE */
+.sheet-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;font-family:var(--mono);margin-left:8px}
+.sheet-badge.ingresos{background:#dbeafe;color:#1d4ed8}
+.sheet-badge.egresos{background:var(--red-faint);color:var(--red)}
+
+/* BARCODE SELECTOR — estilos inline en cada kit-card */
+
+/* JSON */
+.json-preview{background:var(--gray100);border:1px solid var(--gray200);border-radius:var(--r-sm);padding:10px;font-family:var(--mono);font-size:11px;color:var(--gray700);white-space:pre-wrap;word-break:break-all;max-height:160px;overflow-y:auto;margin-top:8px}
+
+/* CONTEO MATCH / MISMATCH */
+.kit-card.match   {border-color:#86efac;background:#f0fdf4}
+.kit-card.mismatch{border-color:#fca5a5;background:#fef2f2}
+.match-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:700;margin-top:8px}
+.match-badge.ok  {background:var(--green-faint);color:var(--green);border:1.5px solid #86efac}
+.match-badge.fail{background:var(--red-faint);color:var(--red);border:1.5px solid #fca5a5}
+.guia-banner{background:var(--blue-faint);border:1.5px solid #93c5fd;border-radius:var(--r-sm);padding:10px 14px;margin-bottom:12px;font-size:12px;color:#1e40af;line-height:1.6}
+.guia-banner strong{font-weight:700}
+.summary-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-sm);font-size:13px;font-weight:600;margin-bottom:12px}
+.summary-bar.all-ok   {background:var(--green-faint);border:1.5px solid #86efac;color:var(--green)}
+.summary-bar.has-error{background:var(--red-faint);  border:1.5px solid #fca5a5;color:var(--red)}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:16px;padding:28px;width:100%;max-width:460px;box-shadow:0 24px 64px rgba(0,0,0,.15);animation:fadeUp .25s ease;border:1px solid var(--gray200)}
+.modal-hdr{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.modal-ico{width:38px;height:38px;background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;flex-shrink:0}
+.modal-title{font-size:16px;font-weight:700;color:var(--gray900)}
+.modal-sub{font-size:12px;color:var(--gray500);margin-top:1px}
+.ig{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.il{font-size:11px;font-weight:700;color:var(--gray500);text-transform:uppercase;letter-spacing:.07em}
+input[type="text"],input[type="password"]{background:var(--gray50);border:1.5px solid var(--gray200);border-radius:var(--r-sm);color:var(--gray900);font-family:var(--mono);font-size:12px;padding:10px 14px;outline:none;transition:all .2s;width:100%}
+input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,165,160,.12);background:white}
+.modal-hint{background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--r-sm);padding:10px 14px;font-size:12px;color:#1e40af;line-height:1.6;margin-bottom:18px}
+.modal-btns{display:flex;gap:8px}
+.btn-cancel{flex:1;padding:10px;border-radius:var(--r-sm);border:1.5px solid var(--gray200);background:white;color:var(--gray500);font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer}
+.btn-save-m{flex:2;padding:10px;border-radius:var(--r-sm);border:none;background:linear-gradient(135deg,var(--navy),var(--navy2));color:white;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer}
+
+/* LOGIN */
+.login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0b1f3a 0%,#122a4e 50%,#1a3660 100%);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-overlay::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px}
+.login-card{background:white;border-radius:20px;padding:36px 32px;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,.3);position:relative;animation:fadeUp .35s ease}
+.login-title{font-size:18px;font-weight:700;color:#0f172a;text-align:center;margin-bottom:4px}
+.login-sub{font-size:12px;color:#64748b;text-align:center;margin-bottom:20px;line-height:1.5}
+.login-tag{display:block;background:#e6f8f8;border:1px solid rgba(14,165,160,.3);color:#0ea5a0;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:600;text-align:center;width:fit-content;margin:0 auto 20px}
+.login-field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.login-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.07em}
+.login-input{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;color:#0f172a;font-family:'Inter',sans-serif;font-size:14px;padding:11px 14px;outline:none;transition:all .2s;width:100%}
+.login-input:focus{border-color:#0ea5a0;box-shadow:0 0 0 3px rgba(14,165,160,.12);background:white}
+.login-btn{width:100%;padding:13px;border-radius:10px;border:none;background:linear-gradient(135deg,#0b1f3a,#1a3660);color:white;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:4px}
+.login-btn:hover{opacity:.9;transform:translateY(-1px)}
+.login-err{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:9px 14px;font-size:13px;color:#dc2626;font-weight:500;margin-top:10px;display:none;text-align:center}
+.login-err.show{display:block}
+
+.footer{text-align:center;padding:0 24px 28px;max-width:780px;margin:0 auto}
+.footer-inner{border-top:1px solid var(--gray200);padding-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.ft{font-size:11px;color:var(--gray400)}
+.fb{font-size:11px;color:var(--teal);font-weight:500}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--gray300);border-radius:3px}
+
+/* DASHBOARD */
+.tab.active-dash{background:linear-gradient(to bottom,#faf5ff,#f5f0ff);color:#7c3aed;border-bottom-color:#7c3aed;font-weight:600}
+#dash-panel{display:none;max-width:780px;margin:0 auto;padding:0 24px 50px;flex-direction:column;gap:14px}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi-card{background:white;border:1px solid var(--gray200);border-radius:var(--r);padding:16px;box-shadow:var(--shadow-sm);text-align:center}
+.kpi-num{font-size:30px;font-weight:700;font-family:var(--mono);line-height:1}
+.kpi-lbl{font-size:10px;font-weight:700;color:var(--gray400);text-transform:uppercase;letter-spacing:.07em;margin-top:5px}
+.kpi-card.c-teal .kpi-num{color:var(--teal)}
+.kpi-card.c-green .kpi-num{color:var(--green)}
+.kpi-card.c-amber .kpi-num{color:var(--amber)}
+.kpi-card.c-purple .kpi-num{color:#7c3aed}
+.dash-filters{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dash-table-card{background:white;border:1px solid var(--gray200);border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden}
+.dash-table-head{padding:12px 18px;border-bottom:1px solid var(--gray100);display:flex;align-items:center;justify-content:space-between}
+.dash-table-title{font-size:11px;font-weight:700;color:var(--gray500);text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:8px}
+.dash-ct{font-size:11px;color:var(--gray400);font-family:var(--mono)}
+table.st{width:100%;border-collapse:collapse;font-size:12px}
+table.st thead tr{background:var(--gray50);border-bottom:2px solid var(--gray200)}
+table.st thead th{padding:8px 12px;font-size:10px;font-weight:700;color:var(--gray500);text-transform:uppercase;letter-spacing:.06em;text-align:left;white-space:nowrap}
+table.st thead th.tc{text-align:center}
+table.st tbody tr{border-bottom:1px solid var(--gray100);transition:background .15s}
+table.st tbody tr:hover{background:var(--gray50)}
+table.st tbody td{padding:8px 12px;vertical-align:middle}
+.td-kit{font-weight:600;color:var(--gray900);font-size:12px}
+.td-num{font-family:var(--mono);font-size:12px;font-weight:700;text-align:center}
+.td-num.pos{color:var(--green)}
+.td-num.neg{color:var(--red)}
+.td-num.neu{color:var(--gray500)}
+.td-num.purple{color:#7c3aed}
+.td-exp{font-size:11px;font-family:var(--mono);color:var(--gray600)}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.badge-ok{background:var(--green-faint);color:var(--green);border:1px solid #86efac}
+.badge-warn{background:var(--amber-faint);color:var(--amber);border:1px solid #fcd34d}
+.badge-venc{background:var(--red-faint);color:var(--red);border:1px solid #fca5a5}
+.badge-elim{background:#fdf4ff;color:#7c3aed;border:1px solid #d8b4fe}
+.badge-pend{background:var(--gray100);color:var(--gray500);border:1px solid var(--gray200)}
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-card">
+    <div class="login-title">Bodega Inteligente UAIB</div>
+    <div class="login-sub">Hospital Las Higueras · Talcahuano<br>Unidad de Apoyo a la Investigación</div>
+    <div class="login-tag">◆ Acceso restringido — personal autorizado</div>
+    <div class="login-field">
+      <label class="login-label">Usuario</label>
+      <select class="login-input" id="login-user">
+        <option value="">— Seleccionar usuario —</option>
+        <option value="1">Noemi Montecinos</option>
+        <option value="2">Cecilia Aburto</option>
+        <option value="3">Sofia Paredes</option>
+        <option value="4">Lorena Rivas</option>
+        <option value="5">Cristobal Alvarado</option>
+      </select>
+    </div>
+    <div class="login-field">
+      <label class="login-label">Contraseña</label>
+      <input type="password" class="login-input" id="login-pass" placeholder="••••••••••">
+    </div>
+    <button class="login-btn" id="login-btn">Ingresar al sistema</button>
+    <div class="login-err" id="login-err">Usuario o contraseña incorrectos</div>
+  </div>
+</div>
+
+<!-- MODAL CONFIG -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-ico">⚙</div>
+      <div>
+        <div class="modal-title">Configuración del sistema</div>
+        <div class="modal-sub">URL del Google Apps Script</div>
+      </div>
+    </div>
+    <div class="ig">
+      <div class="il">URL del Apps Script (termina en /exec)</div>
+      <input type="text" id="sheets-url" placeholder="https://script.google.com/macros/s/...">
+    </div>
+    <div class="modal-hint">
+      En tu Google Sheet: <strong>Extensiones → Apps Script</strong>, pega el código proporcionado e impleméntalo como <strong>App Web</strong> con acceso para <strong>Cualquier persona</strong>.
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save-m" onclick="saveConfig()">Guardar configuración</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-ico">🏥</div>
+    <div class="hero-txt">
+      <h1>Bodega Inteligente UAIB</h1>
+      <div class="sub" id="hero-sub">Hospital Las Higueras · Talcahuano</div>
+      <div class="tag">◆ Unidad de Apoyo a la Investigación · v6</div>
+    </div>
+    <button class="cfg-btn" onclick="openModal()" style="display:none">⚙ Configurar</button>
+    <button class="cfg-btn" onclick="limpiarHistorial()" style="background:rgba(220,38,38,.15);border-color:rgba(220,38,38,.4);color:#fca5a5" title="Borra el historial local de códigos de barra">🗑 Limpiar historial</button>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- TABS — 4 modos -->
+  <div class="tabs">
+    <button class="tab active-guia" id="tab-guia" onclick="setMode('guia')">
+      <span>📄</span><span>Guía Despacho</span>
+    </button>
+    <button class="tab" id="tab-cajas" onclick="setMode('cajas')">
+      <span>📦</span><span>Conteo Cajas</span>
+    </button>
+    <button class="tab" id="tab-retiro" onclick="setMode('retiro')">
+      <span>⬆</span><span>Retiro / Egreso</span>
+    </button>
+    <button class="tab" id="tab-dash" onclick="setMode('dash')">
+      <span>📊</span><span>Resumen Bodega</span>
+    </button>
+  </div>
+
+  <!-- STUDY DATA -->
+  <div class="card">
+    <div class="card-hdr">
+      <div class="card-title"><span class="ctdot"></span>Datos del estudio clínico</div>
+      <span id="sheet-target" class="sheet-badge ingresos" style="display:none"></span>
+    </div>
+    <div class="card-bdy">
+      <div class="sgrid">
+        <div class="fg">
+          <label class="fl">Investigador principal</label>
+          <select id="sel-inv" onchange="onInvChange()">
+            <option value="">— Seleccionar —</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Protocolo</label>
+          <select id="sel-prot" disabled>
+            <option value="">— Seleccionar —</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHOTO UPLOAD — single -->
+  <div class="card">
+    <div class="card-hdr">
+      <div class="card-title"><span class="ctdot"></span><span id="photo-card-title">Foto del documento</span></div>
+      <span style="font-size:11px;color:var(--gray400)">1 foto por vez</span>
+    </div>
+    <div class="card-bdy">
+      <div class="upload-zone" id="upload-zone"
+           ondragover="onDragOver(event)" ondragleave="onDragLeave()" ondrop="onDrop(event)"
+           onclick="triggerUpload()">
+        <div id="up-placeholder" class="up-placeholder">
+          <div class="up-icon" id="up-icon">📄</div>
+          <div class="up-title">Arrastra o toca para subir foto</div>
+          <div class="up-sub" id="up-sub">Una foto por vez</div>
+        </div>
+        <img id="photo-preview" class="photo-preview" style="display:none" alt="vista previa">
+        <button class="photo-change" id="photo-change" style="display:none"
+                onclick="event.stopPropagation(); triggerUpload()">🔄 Cambiar foto</button>
+      </div>
+      <input type="file" id="file-input" class="upload-input" accept="image/*" onchange="onFileSelect(event)">
+    </div>
+  </div>
+
+  <!-- HIDDEN PROMPT -->
+  <textarea id="prompt-text" style="display:none"></textarea>
+
+  <!-- ALERT -->
+  <div class="alert alert-warn" id="main-alert"></div>
+
+  <!-- ANALYZE BUTTON -->
+  <button class="analyze-btn guia" id="analyze-btn" onclick="analyze()">
+    <span id="btn-icon">🔬</span>
+    <span id="btn-text">Analizar guía de despacho</span>
+  </button>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading" style="display:none">
+    <div class="spinner"></div>
+    <span id="loading-text">Analizando con Claude AI...</span>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="result-section" style="display:none">
+    <div class="result-card">
+      <div class="result-hdr">
+        <div class="status-pill ok" id="status-pill">
+          <span class="status-pulse"></span>
+          <span id="status-text">Análisis completado</span>
+        </div>
+        <span style="font-size:11px;color:var(--gray400);font-family:var(--mono)" id="result-time"></span>
+      </div>
+      <div class="result-bdy" id="result-body"></div>
+    </div>
+    <div style="height:12px"></div>
+
+    <button class="save-btn" id="save-btn" onclick="saveToSheets()">
+      <span id="save-icon">📊</span>
+      <span id="save-text">Registrar en Google Sheets</span>
+    </button>
+    <details style="margin-top:12px;display:none">
+      <summary style="font-size:11px;font-weight:700;color:var(--gray400);text-transform:uppercase;letter-spacing:.07em;cursor:pointer;padding:4px 0">▸ Ver respuesta JSON de Claude</summary>
+      <div id="raw-json" class="json-preview"></div>
+    </details>
+    <details style="margin-top:8px;display:none" id="debug-details">
+      <summary style="font-size:11px;font-weight:700;color:#2563eb;text-transform:uppercase;letter-spacing:.07em;cursor:pointer;padding:4px 0">▸ 🔍 Verificar datos que se enviarán a Sheets</summary>
+      <div id="debug-panel" class="json-preview" style="border-color:#93c5fd;background:#eff6ff;color:#1e3a5f"></div>
+    </details>
+  </div>
+
+</div><!-- /content -->
+
+
+<!-- DASHBOARD PANEL -->
+<div id="dash-panel">
+  <div class="kpi-row" id="dash-kpis">
+    <div class="kpi-card" style="grid-column:1/-1;padding:28px 20px;border:2px dashed var(--gray200)">
+      <div style="font-size:38px;margin-bottom:10px">&#128269;</div>
+      <div style="font-size:14px;font-weight:600;color:var(--gray700)">Selecciona investigador y protocolo</div>
+      <div style="font-size:12px;color:var(--gray400);margin-top:5px">para ver el estado de existencias en bodega</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr">
+      <div class="card-title"><span class="ctdot" style="background:#7c3aed"></span>Filtros</div>
+    </div>
+    <div class="card-bdy">
+      <div class="dash-filters">
+        <div class="fg">
+          <label class="fl">Investigador principal</label>
+          <select id="dash-inv" onchange="onDashInvChange()">
+            <option value="">-- Seleccionar --</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Protocolo</label>
+          <select id="dash-proto" disabled onchange="renderDashTable()">
+            <option value="">-- Seleccionar --</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="dash-table-wrap" style="display:none" class="dash-table-card">
+    <div class="dash-table-head">
+      <div class="dash-table-title"><span style="width:6px;height:6px;border-radius:50%;background:#7c3aed;display:inline-block"></span>Estado de Existencias por Kit y Fecha de Vencimiento</div>
+      <span class="dash-ct" id="dash-count">--</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="st">
+        <thead>
+          <tr>
+            <th>Kit Name</th>
+            <th class="tc">Recibido por Guía</th>
+            <th class="tc">Total en Stock</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="dash-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-inner">
+    <span class="ft">Hospital Las Higueras · Talcahuano</span>
+    <span style="color:var(--gray300)">·</span>
+    <span class="ft">UAIB</span>
+    <span style="color:var(--gray300)">·</span>
+    <span class="fb">⚡ Powered by Claude AI</span>
+  </div>
+</div>
+
+<script>
+// ── PROXY & CREDENTIALS ──────────────────────────────────
+const PROXY = 'https://bodega-uaib-proxy.cristobalalvaradol.workers.dev';
+
+const CREDS = {
+  "1":{ nombre:"Noemi Montecinos",   clave:"noemimontecinosuaib"   },
+  "2":{ nombre:"Cecilia Aburto",     clave:"ceciliaaburtoaib"       },
+  "3":{ nombre:"Sofia Paredes",      clave:"sofiapardesuaib"        },
+  "4":{ nombre:"Lorena Rivas",       clave:"lorenarivasuaib"        },
+  "5":{ nombre:"Cristobal Alvarado", clave:"cristobalalvaradouaib"  }
+};
+
+// ── INVESTIGADORES / PROTOCOLOS ──────────────────────────
+const DB = {
+  "Dr. Álex Villablanca":  {"Cardiología":        ["LILAC/ANT 10","1378-0020","EFC18419","20220196","20230227","1378-0018","D7960C00012","D7960C00015","D6402C00012"]},
+  "Dr. Álvaro Valenzuela": {"Dermatología":       ["LTS18420"]},
+  "Dr. Carlos Valenzuela": {"Gastroenterología":  ["M16-000","D9690C00005","M16-066","DRI16804","DRI17963","DRI18212","LTS19689","XmAb942-01"]},
+  "Dr. Hugo Larraín":      {"Dermatología":       ["EFC17561","EFC17559","EFC17600","LTS17367","DRI19220","EFC18419"]},
+  "Dr. Julio Soto":        {"Pediatría":          ["CRN04894-13"]},
+  "Dr. Osvaldo Pérez":     {"Cardiología":        ["VIVA"]},
+  "Dr. Pablo Merino":      {"Oncología":          ["CO44657","WO46069"]}
+};
+
+// ── MODES CONFIG ─────────────────────────────────────────
+const MODES = {
+  guia: {
+    tabClass:'active-guia', btnClass:'guia',
+    upIcon:'📄', upSub:'Fotografía la guía de despacho oficial · Solo una foto',
+    photoTitle:'Foto de guía de despacho',
+    btnIcon:'🔬', btnText:'Analizar guía de despacho',
+    loadingText:'Leyendo guía de despacho...',
+    tipo:'ingreso_guia', sheet:'INGRESOS Y EGRESOS', sheetClass:'ingresos',
+    prompt:`Analiza esta imagen. PRIMERO determina si es un DOCUMENTO DE PAPEL o una FOTO DE CAJAS FÍSICAS.
+
+⛔ RECHAZO OBLIGATORIO — Si la imagen muestra CAJAS FÍSICAS:
+Señales de cajas físicas (rechazar inmediatamente):
+  - Etiquetas con "Sponsor:", "Exp. Date:", "Lot/Expiry:", "Kit Expiration", "Visit:"
+  - Códigos de barras con números impresos debajo (FC045XXX, 259XXXXXXXX, 653XXXXXXX)
+  - Cajas de cartón o estuches apilados con etiquetas adhesivas
+  - Logos PPD/Thermo Fisher en cajas físicas, cajas Roche, cajas Amgen de cartón café
+Si detectas CUALQUIERA de estas señales → responde SOLO esto:
+{"error":"CAJAS_FISICAS","detalle":"Imagen de cajas físicas detectada. Usa la pestaña Conteo Cajas."}
+
+✅ HAY 4 TIPOS DE GUÍA DE DESPACHO — TODOS SON DOCUMENTOS IMPRESOS EN PAPEL:
+
+════════════════════════════════════════════════════════
+TIPO 1 — PPD (PPD Global Central Labs)
+════════════════════════════════════════════════════════
+Señas: Logo "PPD" arriba izquierda · tabla con columnas "Item Desc / PPD Part No / Cat No / Quat"
+▸ protocol_en_guia: campo "Protocol No:" → solo ANTES del paréntesis
+  Ej: "Protocol No: LTS17367 (KY1005-CT06)" → "LTS17367"
+▸ kit_name: columna "Item Desc" → copia EXACTO
+  Ej: "Kit Type A4", "Kit Type HBV-HCV CONF 4", "Kit Type QFT 3", "Kit Type B4"
+▸ qty: columna "Quat"
+▸ guia_despacho: campo "Order:" (Ej: "2602-05772")
+▸ sponsor: "PPD"
+
+════════════════════════════════════════════════════════
+TIPO 2 — LABCORP (Master Packing List)
+════════════════════════════════════════════════════════
+Señas: Logo "labcorp" + título "MASTER PACKING LIST" · tabla "KIT TYPE/PRODUCT ID / DESCRIPTION / QTY SHIPPED / QTY BACKORDERED"
+▸ protocol_en_guia: campo "PROTOCOL:" (Ej: "D6402C00012", "CO44657")
+▸ kit_name: columna "KIT TYPE/PRODUCT ID" → copia EXACTO (NO uses la columna DESCRIPTION)
+  Ej: "Kit Type: 1", "Kit Type: 2", "Kit Type: T-1", "Kit Type: U", "Bulk: SSC4", "Bulk: SUPK", "Bulk: 1LSP", "Bulk: DCPL"
+  ⚠️ CRÍTICO: Toma el texto de la columna KIT TYPE/PRODUCT ID, NO la descripción
+▸ qty: columna "QTY SHIPPED" (NO uses QTY REQUESTED ni QTY BACKORDERED)
+▸ guia_despacho: código de barras en la esquina superior derecha (Ej: "S-1515762_1")
+▸ sponsor: campo "SPONSOR:" (Ej: "ASTRAZENECA AB", "Roche Products Limited")
+
+════════════════════════════════════════════════════════
+TIPO 3 — IQVIA LABORATORIES / THERMO FISHER (CTM Order)
+════════════════════════════════════════════════════════
+Señas: Logo "IQVIA LABORATORIES" + encabezado negro "Kit Production - CTM Order IQVIA Labs Atlanta"
+▸ protocol_en_guia: campo "Study:" (Ej: "20230227", "20220196")
+▸ kit_name: columna "Kit Name" → copia EXACTO
+  Ej: "Kit A1-AM/SCREEN", "Kit B1-AM/D1", "Kit E1-AM/EOP1", "Kit F1-AM/SFU/EOS", "Kit H1-AM/UNSCHED"
+  ⚠️ NO incluyas ítems de "Additional Supplemental Supplies" (Absorbent Tube Holder, Bag, GEL WRAP, IATA Contents Card)
+▸ qty: columna "QTY"
+▸ guia_despacho: campo "CTM Order #:" (Ej: "KP25126677", "KP25127263")
+▸ sponsor: campo "Sponsor:" (Ej: "Amgen")
+
+════════════════════════════════════════════════════════
+TIPO 4 — IQVIA (Invoice / Factura de materiales de estudio)
+════════════════════════════════════════════════════════
+Señas: Logo "IQVIA" + título "INVOICE" · tabla "Quantity / Full Description / Unit Value / Total Value"
+▸ protocol_en_guia: campo "Protocol number:" (Ej: "20230227")
+▸ kit_name: columna "Full Description" → copia EXACTO cada ítem
+  Ej: "Patient ID Card", "Study Post Enrollment Card", "Participant Study Guide", "Kit Box & Label"
+▸ qty: columna "Quantity"
+▸ guia_despacho: campo "AWB order number:" (Ej: "2953436")
+▸ sponsor: busca en el título de la factura (Ej: "AmGen MariTime 227 for Chile" → "Amgen")
+▸ NOTA: Son materiales de estudio (formularios, folletos, tarjetas) — incluirlos igual en kit_names
+
+════════════════════════════════════════════════════════
+REGLAS GENERALES
+════════════════════════════════════════════════════════
+- Las guías NO incluyen fecha de vencimiento — NO busques exp_date.
+- qty = unidades enviadas (número entero).
+- lote = null salvo que el documento lo indique explícitamente.
+- tipo_guia: indica cuál de los 4 tipos es ("PPD", "LABCORP", "IQVIA_CTM", "IQVIA_INVOICE").
+
+Responde SOLO en JSON sin markdown:
+{
+  "tipo_guia": "PPD" | "LABCORP" | "IQVIA_CTM" | "IQVIA_INVOICE",
+  "protocol_en_guia": "código del protocolo o null",
+  "kit_names": [
+    {"kit_name":"nombre exacto","qty":número,"lote":null}
+  ],
+  "guia_despacho": "número de guía/orden o null",
+  "sponsor": "nombre del sponsor o null",
+  "observaciones": null
+}
+Si la imagen es ilegible: {"error":"ILEGIBLE","detalle":"descripción"}`
+  },
+
+  cajas: {
+    tabClass:'active-cajas', btnClass:'cajas',
+    upIcon:'📦', upSub:'Fotografía las cajas físicas · Solo una foto',
+    photoTitle:'Foto de cajas físicas (conteo)',
+    btnIcon:'🔢', btnText:'Contar cajas con IA',
+    loadingText:'Contando cajas físicamente...',
+    tipo:'ingreso_cajas', sheet:'INGRESOS Y EGRESOS', sheetClass:'ingresos',
+    prompt:`Eres un asistente de bodega farmacéutica. Analiza esta foto de CAJAS FÍSICAS de kits de investigación clínica.
+
+⚠️ NUEVA LÓGICA: Devuelve UNA ENTRADA POR CADA CAJA INDIVIDUAL, no agrupadas.
+Cada caja tiene su propio código de barras — ese es su identificador único.
+
+═══════════════════════════════════════════════════
+PASO 0 — LEE EL PROTOCOLO DE ESTUDIO DE LA ETIQUETA
+═══════════════════════════════════════════════════
+Antes de leer el kit name, lee el protocolo de la etiqueta según fabricante:
+  PPD:   "Protocol: LTS17367 (KY1005-CT06)" → protocol_en_caja = "LTS17367" (solo antes del paréntesis)
+  Amgen: "Protocol: 20220196"               → protocol_en_caja = "20220196"
+  Roche: el código aparece en la segunda línea de la etiqueta, bajo "Roche Products Limited"
+         Ej: "Roche Products Limited / CO44657 / 505326" → protocol_en_caja = "CO44657"
+         (es el código alfanumérico de 6-7 caracteres, no el número de 6 dígitos de lote)
+Si hay varias cajas, registra el protocolo de la primera caja visible.
+
+═══════════════════════════════════════════════════
+PASO 1 — IDENTIFICA EL FABRICANTE Y LEE LA ETIQUETA
+═══════════════════════════════════════════════════
+▸ TIPO A — PPD / Thermo Fisher Scientific:
+  • kit_name: campo "Kit Type" → valor completo incluyendo "Kit Type"
+    Ej: "Kit Type HBV-HCV CONF 4", "Kit Type A4", "Kit Type QFT 3"
+  • exp_date: campo "Lot/Expiry: [LOTE] / [FECHA]" → toma lo DESPUÉS del "/"
+    Ej: "Lot/Expiry: BNDF0091-TPCU8504879 / 31-Oct-2028" → "31-Oct-2028"
+  • barcode: número impreso BAJO el código de barras de la etiqueta
+    Ej: 25916814211, 25917040539, 25900032899
+
+▸ TIPO B — Roche Products Limited:
+  • kit_name: nombre impreso en grande en la caja (Ej: "CYCLE 1 DAY 15")
+  • exp_date: etiqueta adhesiva "Kit Expiration" (Ej: "31-Dec-2026")
+  • barcode: número bajo el código de barras (Ej: 6531741864)
+
+▸ TIPO C — Amgen (Sponsor: Amgen):
+  • kit_name: campo "Visit:" → desde "Kit" en adelante, copiando EXACTAMENTE incluyendo "/" y "-"
+    ⚠️ CRÍTICO: Los "/" son parte del nombre. NUNCA los omitas ni reemplaces.
+    Ej: "Visit: Kit A1-AM/P1/SCREEN"  → "Kit A1-AM/P1/SCREEN"   ✅
+    Ej: "Visit: Kit K1-AM/UNSCHED"    → "Kit K1-AM/UNSCHED"     ✅
+    Ej: "Visit: Kit K1-AM/P/TUECP1"  → "Kit K1-AM/P/TUECP1"    ✅
+    Ej: "Visit: Kit L1-AM/SFU/EOS"   → "Kit L1-AM/SFU/EOS"     ✅
+    ❌ MAL: "Kit K1-AMJUNSCHED", "Kit A1-AMPJUSCREEN" (faltan los "/")
+  • exp_date: campo "Exp. Date:" (guiones normales o largos)
+    Ej: "Exp. Date: 31–JUL–2026" → "31-Jul-2026"
+  • barcode: código FC seguido de 6 dígitos exactos (Ej: FC850326, FC850316)
+    ⚠️ CRÍTICO: Lee los 6 dígitos después de "FC" con cuidado — NO inventes ni aproximes.
+    Si no puedes leer todos los dígitos → "ILEGIBLE-[KitName]-[numero]"
+
+═══════════════════════════════════════════════════
+PASO 2 — REGISTRA CADA CAJA INDIVIDUALMENTE
+═══════════════════════════════════════════════════
+Para CADA caja física en la imagen:
+  1. Lee kit_name de su etiqueta
+  2. Lee exp_date de su etiqueta (campo Lot/Expiry o Kit Expiration o Exp. Date)
+  3. Lee barcode: el número impreso debajo del código de barras
+  4. Crea UNA entrada en el array con qty_rec = 1
+
+Si hay 3 cajas del mismo kit → 3 entradas separadas con distinto barcode.
+
+LECTURA DE BARCODES — REGLAS CRÍTICAS:
+  • El número barcode está impreso DEBAJO de las barras verticales, en la etiqueta.
+  • Si está parcialmente cortado o en sombra, lee los dígitos visibles y completa con "?" los que no se ven.
+    Ej: si ves "2590842????", devuelve "2590842????" — NUNCA dejes barcode vacío si ves aunque sea parte.
+  • Si hay varias cajas del mismo kit y una tiene el barcode tapado, lee las demás primero.
+  • Para PPD: el barcode es un número de 11 dígitos (Ej: 25916814211, 25908425619).
+  • Para Amgen: comienza con "FC" seguido de 6 dígitos (Ej: FC045447).
+  • NUNCA repitas el mismo barcode para dos cajas distintas.
+  • Si definitivamente no puedes leer ningún dígito → usa el formato "ILEGIBLE-[KitName]-[numero]"
+    Ej: "ILEGIBLE-C4-1", "ILEGIBLE-C4-2"
+
+═══════════════════════════════════════════════════
+PASO 3 — FECHA DE VENCIMIENTO ★ CRÍTICO
+═══════════════════════════════════════════════════
+Formato de salida: DD-Mon-YYYY en INGLÉS
+  Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+  Ej: "31-Oct-2028", "30-Jun-2028", "31-Aug-2026", "31-Dec-2026"
+NUNCA null si hay fecha visible.
+
+═══════════════════════════════════════════════════
+RESPUESTA — SOLO JSON, SIN MARKDOWN
+═══════════════════════════════════════════════════
+{
+  "protocol_en_caja": "protocolo leído de la etiqueta o null",
+  "cajas": [
+    {"kit_name":"nombre exacto","qty_rec":1,"exp_date":"DD-Mon-YYYY","barcode":"número"}
+  ],
+  "observaciones": "Si algún barcode fue ilegible o parcial, descríbelo aquí. Si todo está bien → null"
+}
+
+EJEMPLO para 3 cajas HBV-HCV CONF 4:
+  {"kit_name":"Kit Type HBV-HCV CONF 4","qty_rec":1,"exp_date":"31-Oct-2028","barcode":"25916814211"}
+  {"kit_name":"Kit Type HBV-HCV CONF 4","qty_rec":1,"exp_date":"31-Oct-2028","barcode":"25917040539"}
+  {"kit_name":"Kit Type HBV-HCV CONF 4","qty_rec":1,"exp_date":"31-Oct-2028","barcode":"25900032899"}
+
+EJEMPLO con barcode parcial:
+  {"kit_name":"Kit Type C4","qty_rec":1,"exp_date":"30-Jun-2028","barcode":"2590309????"}
+
+Si la imagen es ilegible: {"error":"ILEGIBLE","detalle":"descripción breve"}`
+  },
+
+  retiro: {
+    tabClass:'active-retiro', btnClass:'retiro',
+    upIcon:'📸', upSub:'Fotografía los kits a retirar · Solo una foto',
+    photoTitle:'Foto del retiro de kits',
+    btnIcon:'📤', btnText:'Registrar retiro con IA',
+    loadingText:'Identificando kits retirados...',
+    tipo:'egreso', sheet:'INGRESOS Y EGRESOS', sheetClass:'ingresos',
+    prompt:`Eres un asistente de bodega farmacéutica. Analiza esta foto de kits que se están RETIRANDO/EGRESANDO.
+
+═══════════════════════════════════════════════════
+PASO 1 — IDENTIFICA EL FABRICANTE Y NOMBRE DEL KIT
+═══════════════════════════════════════════════════
+▸ PPD / Thermo Fisher: busca campo "Kit Type" → kit_name = valor completo.
+  Ej: "Kit Type D4" → kit_name = "Kit Type D4"
+
+▸ Roche Products Limited: el nombre está impreso en grande en la caja (sin campo "Kit Type").
+  Ej: "CYCLE 1 DAY 15" → kit_name = "CYCLE 1 DAY 15"
+  Ej: "CYCLE 2 DAY 1"  → kit_name = "CYCLE 2 DAY 1"
+
+▸ Amgen (Sponsor: Amgen): campo "Visit:" → toma desde "Kit" en adelante, copiando EXACTAMENTE con todos los "/" y "-"
+  Ej: "Visit: Kit A1-AM/P1/SCREEN" → kit_name = "Kit A1-AM/P1/SCREEN"
+  Ej: "Visit: Kit K1-AM/UNSCHED"   → kit_name = "Kit K1-AM/UNSCHED"
+  ❌ MAL: "Kit K1-AMJUNSCHED" (falta el "/") — SIEMPRE incluye los "/"
+
+▸ Otro fabricante: usa el nombre más prominente de la etiqueta.
+
+═══════════════════════════════════════════════════
+PASO 2 — CUENTA LAS CAJAS RETIRADAS (qty_egresado)
+═══════════════════════════════════════════════════
+Cuenta UNA POR UNA todas las cajas de ese kit que se están retirando.
+  • NUNCA pongas 0 si hay al menos 1 caja visible.
+
+═══════════════════════════════════════════════════
+PASO 3 — FECHA DE VENCIMIENTO (exp_date) ★ CRÍTICO
+═══════════════════════════════════════════════════
+▸ PPD: "Lot/Expiry: [LOTE] / [FECHA]" → toma lo DESPUÉS del "/" (el lote antes del / NO es la fecha)
+  Ej: "Lot/Expiry: BNDF0091-XXXX / 30-Jun-2026" → "30-Jun-2026"
+
+▸ Roche: etiqueta adhesiva "Kit Expiration"
+  Ej: "Kit Expiration 31-Dec-2026" → "31-Dec-2026"
+
+▸ Amgen: campo "Exp. Date:" (puede tener guiones normales o largos –)
+  Ej: "Exp. Date: 31–JUL–2026" → "31-Jul-2026"
+  Ej: "Exp. Date: 30–SEP–2026" → "30-Sep-2026"
+
+Formato de salida: DD-Mon-YYYY en INGLÉS (Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)
+NUNCA devuelvas null si hay alguna fecha visible.
+
+═══════════════════════════════════════════════════
+RESPUESTA — SOLO JSON, SIN MARKDOWN
+═══════════════════════════════════════════════════
+{
+  "kits_egresados": [
+    {"kit_name":"nombre exacto","qty_egresado":número,"exp_date":"DD-Mon-YYYY","lote":"código o null","motivo":"retiro paciente / vencimiento / devolución / otro"}
+  ],
+  "observaciones": null
+}
+
+EJEMPLOS:
+  {"kit_name":"Kit A1-AM/P1/SCREEN","qty_egresado":1,"exp_date":"31-Jul-2026","lote":null,"motivo":"retiro paciente"}
+  {"kit_name":"CYCLE 1 DAY 15","qty_egresado":1,"exp_date":"31-Dec-2026","lote":null,"motivo":"retiro paciente"}
+  {"kit_name":"Kit Type A4","qty_egresado":2,"exp_date":"30-Jun-2026","lote":null,"motivo":"retiro paciente"}
+
+Si la imagen es ilegible: {"error":"ILEGIBLE","detalle":"descripción breve"}`
+  }
+};
+
+// ── STATE ────────────────────────────────────────────────
+let currentMode = 'guia';
+let currentImage = null;
+let currentResult = null;
+let config = { sheetsUrl: '' };
+let barcodeMode = null; // 'sin' | 'con' — elegido por el usuario al ver resultados de guía
+
+// ── INIT ─────────────────────────────────────────────────
+(function init() {
+  // Populate investigadores
+  const s = document.getElementById('sel-inv');
+  Object.keys(DB).sort().forEach(inv => {
+    const o = document.createElement('option');
+    o.value = inv; o.textContent = inv; s.appendChild(o);
+  });
+
+  // Restore session
+  const u = sessionStorage.getItem('uaib_user');
+  if (u) {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('hero-sub').textContent =
+      'Bienvenida/o, ' + u.split(' ')[0] + ' · Hospital Las Higueras';
+  }
+
+  // Load saved URL — forzar URL correcta y limpiar versiones antiguas
+  const DEFAULT_SCRIPT = 'https://script.google.com/macros/s/AKfycbx8LFnKIFEa1bqpJ9sEMTv--rovur-iEMuCcJhCk_DAoZnjVX0m7ewA1RqVO-ilciBR/exec';
+  const OLD_SCRIPT     = 'https://script.google.com/macros/s/AKfycbxFWYDuAPdiqFkRydHGeBC8Mzc6CHWtDG-mCRL1-_amM3OsZY5ZN0MiDVU0sDMe9E1_/exec';
+  const savedUrl = localStorage.getItem('uaib_sheets_url');
+  if (!savedUrl || savedUrl === OLD_SCRIPT) {
+    localStorage.setItem('uaib_sheets_url', DEFAULT_SCRIPT);
+    config.sheetsUrl = DEFAULT_SCRIPT;
+  } else {
+    config.sheetsUrl = savedUrl;
+  }
+
+  // Limpiar historial local de barcodes al inicio para evitar bloqueos incorrectos
+  localStorage.removeItem('uaib_barcodes');
+
+  // Set initial mode
+  setMode('guia');
+})();
+
+// ── DROPDOWNS ────────────────────────────────────────────
+function getArea(inv, prot) {
+  if (!inv || !prot) return '';
+  const a = DB[inv] || {};
+  for (const k of Object.keys(a)) { if (a[k].includes(prot)) return k; }
+  return Object.keys(a)[0] || '';
+}
+
+function onInvChange() {
+  const inv = document.getElementById('sel-inv').value;
+  const sp = document.getElementById('sel-prot');
+  sp.innerHTML = '<option value="">— Seleccionar —</option>';
+  sp.disabled = true;
+  if (!inv) return;
+  const ps = new Set();
+  Object.values(DB[inv]).forEach(arr => arr.forEach(p => ps.add(p)));
+  const sorted = Array.from(ps).sort();
+  sorted.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p; o.textContent = p; sp.appendChild(o);
+  });
+  sp.disabled = false;
+  if (sorted.length === 1) sp.value = sorted[0];
+}
+
+function getSel() {
+  const inv  = document.getElementById('sel-inv').value;
+  const prot = document.getElementById('sel-prot').value;
+  return { investigador: inv, area: getArea(inv, prot), protocolo: prot };
+}
+
+// ── MODE ─────────────────────────────────────────────────
+function setMode(mode) {
+  const mainEl = document.querySelector('.content');
+  const dashEl = document.getElementById('dash-panel');
+  if (mode === 'dash') {
+    currentMode = 'dash';
+    mainEl.style.display = 'none';
+    dashEl.style.display = 'flex';
+    ['guia','cajas','retiro'].forEach(k => document.getElementById('tab-'+k).className = 'tab');
+    document.getElementById('tab-dash').className = 'tab active-dash';
+    initDashPanel();
+    return;
+  }
+  mainEl.style.display = 'flex';
+  dashEl.style.display = 'none';
+  document.getElementById('tab-dash').className = 'tab';
+  currentMode = mode;
+  const m = MODES[mode];
+  // Tabs
+  ['guia','cajas','retiro'].forEach(k => {
+    document.getElementById('tab-'+k).className =
+      'tab' + (k === mode ? ' ' + MODES[k].tabClass : '');
+  });
+
+  // UI strings
+  document.getElementById('photo-card-title').textContent = m.photoTitle;
+  document.getElementById('up-icon').textContent = m.upIcon;
+  document.getElementById('up-sub').textContent  = m.upSub;
+  document.getElementById('analyze-btn').className = 'analyze-btn ' + m.btnClass;
+  document.getElementById('btn-icon').textContent  = m.btnIcon;
+  document.getElementById('btn-text').textContent  = m.btnText;
+  document.getElementById('loading-text').textContent = m.loadingText;
+  document.getElementById('prompt-text').value = m.prompt;
+
+  // Sheet badge
+  const badge = document.getElementById('sheet-target');
+  badge.textContent = '→ Hoja: ' + m.sheet;
+  badge.className = 'sheet-badge ' + m.sheetClass;
+  badge.style.display = 'inline-flex';
+
+  // Reset
+  currentImage = null;
+  currentResult = null;
+  renderPhoto();
+  clearResult();
+  document.getElementById('main-alert').classList.remove('show');
+}
+
+// ── PHOTO ────────────────────────────────────────────────
+function triggerUpload() { document.getElementById('file-input').click(); }
+
+function onFileSelect(e) {
+  const f = e.target.files[0];
+  if (f && f.type.startsWith('image/')) setImage(f);
+  e.target.value = '';
+}
+
+function onDragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag'); }
+function onDragLeave()  { document.getElementById('upload-zone').classList.remove('drag'); }
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) setImage(f);
+}
+
+function setImage(file) {
+  const r = new FileReader();
+  r.onload = ev => {
+    const url = ev.target.result;
+    currentImage = { b64: url.split(',')[1], url };
+    renderPhoto();
+    clearResult();
+  };
+  r.readAsDataURL(file);
+}
+
+function renderPhoto() {
+  const zone = document.getElementById('upload-zone');
+  const ph   = document.getElementById('up-placeholder');
+  const img  = document.getElementById('photo-preview');
+  const chg  = document.getElementById('photo-change');
+  if (currentImage) {
+    zone.classList.add('has-photo');
+    ph.style.display = 'none';
+    img.src = currentImage.url; img.style.display = 'block';
+    chg.style.display = 'block';
+  } else {
+    zone.classList.remove('has-photo');
+    ph.style.display = 'block';
+    img.style.display = 'none'; img.src = '';
+    chg.style.display = 'none';
+  }
+}
+
+// ── HELPERS ──────────────────────────────────────────────
+function clearResult() {
+  currentResult = null;
+  barcodeMode = null;
+  window._kitBcModes = {};
+  document.getElementById('result-section').style.display = 'none';
+  resetSaveBtn();
+}
+
+function showAlert(msg, type='warn') {
+  const el = document.getElementById('main-alert');
+  // Convierte saltos de línea a <br> y permite HTML básico
+  el.innerHTML = msg.replace(/\n/g, '<br>');
+  el.className = 'alert alert-' + (type==='err'?'err':'warn') + ' show';
+}
+
+// ── ANALYZE ──────────────────────────────────────────────
+async function analyze() {
+  const { investigador, area, protocolo } = getSel();
+  if (!investigador || !protocolo) { showAlert('Selecciona investigador y protocolo antes de analizar.'); return; }
+  if (!currentImage) { showAlert('Sube una foto antes de analizar.'); return; }
+
+  document.getElementById('main-alert').classList.remove('show');
+  document.getElementById('analyze-btn').disabled = true;
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('loading').style.display = 'flex';
+
+  // ── Para cajas y retiro: obtener kit names reales del Sheet ──────────────
+  // Se inyectan en el prompt para que Claude corrija su OCR con los nombres exactos
+  let kitsRealesEnSheet = [];
+  if ((currentMode === 'cajas' || currentMode === 'retiro') && config.sheetsUrl) {
+    document.getElementById('loading-text').textContent = 'Consultando kits del protocolo...';
+    try {
+      const kr = await fetch(config.sheetsUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'tipo=obtener_kits&protocolo=' + encodeURIComponent(protocolo),
+        redirect: 'follow'
+      });
+      const kt = await kr.text();
+      let kj = null; try { kj = JSON.parse(kt); } catch {}
+      if (kj && kj.ok && kj.kits && kj.kits.length > 0) {
+        kitsRealesEnSheet = kj.kits;
+      }
+    } catch (_) { /* si falla, continúa sin kits de referencia */ }
+    document.getElementById('loading-text').textContent = MODES[currentMode].loadingText;
+  }
+
+  // Construir prompt con lista de kits reales inyectada si aplica
+  let promptFinal = document.getElementById('prompt-text').value;
+  if (kitsRealesEnSheet.length > 0) {
+    const listaKits = kitsRealesEnSheet.map(k => '  • ' + k).join('\n');
+    const bloque = `\n\n════════════════════════════════════════════════════════
+CORRECCIÓN OBLIGATORIA DE KIT NAMES — LISTA OFICIAL DEL PROTOCOLO ${protocolo}
+════════════════════════════════════════════════════════
+Los siguientes son los ÚNICOS nombres de kit válidos para este protocolo en el sistema:
+${listaKits}
+
+⚠️ REGLA CRÍTICA: Al leer el nombre de cada kit en la etiqueta, debes compararlo con esta lista y usar el nombre EXACTO de la lista que más se parezca a lo que lees.
+Ejemplos de corrección:
+  • Lees "Kit F1-AM/FUTEOS"  → el más cercano es "Kit F1-AM/SFU/EOS"  → usa "Kit F1-AM/SFU/EOS"
+  • Lees "Kit A1-AMPJUSCREEN" → el más cercano es "Kit A1-AM/P1/SCREEN" → usa "Kit A1-AM/P1/SCREEN"
+  • Lees "Kit K1-AMJUNSCHED"  → el más cercano es "Kit K1-AM/UNSCHED"   → usa "Kit K1-AM/UNSCHED"
+NUNCA uses un nombre que NO esté en la lista de arriba. Si no encuentras coincidencia razonable → usa el nombre más parecido de la lista.`;
+    // Insertar el bloque justo antes del último ═══ de RESPUESTA
+    const insertPos = promptFinal.lastIndexOf('═══════════════════════════════════════════════════\nRESPUESTA');
+    if (insertPos !== -1) {
+      promptFinal = promptFinal.slice(0, insertPos) + bloque + '\n\n' + promptFinal.slice(insertPos);
+    } else {
+      promptFinal = promptFinal + bloque;
+    }
+  }
+
+  const t0 = Date.now();
+  try {
+    const resp = await fetch(PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-5-20250929', max_tokens: 1024,
+        messages: [{ role: 'user', content: [
+          { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: currentImage.b64 } },
+          { type: 'text', text: promptFinal }
+        ]}]
+      })
+    });
+
+    const data = await resp.json();
+    const elapsed = ((Date.now() - t0) / 1000).toFixed(1);
+    if (!resp.ok) throw new Error(data.error?.message || 'Error API ' + resp.status);
+
+    const raw = data.content[0].text.trim();
+    document.getElementById('raw-json').textContent = raw;
+
+    let parsed;
+    try { parsed = JSON.parse(raw.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim()); }
+    catch { throw new Error('Respuesta no procesable. Intenta con una foto más clara o con mejor iluminación.'); }
+
+    parsed.investigador = investigador;
+    parsed.area         = area;
+    parsed.protocolo    = protocolo;
+    currentResult = parsed;
+
+    // ── Detección de foto incorrecta en el modo equivocado ───────────────
+    if (currentMode === 'guia') {
+      // En modo GUÍA solo se acepta un documento con kit_names[]
+      // Si el modelo detectó cajas físicas, retorna error CAJAS_FISICAS
+      if (parsed.error === 'CAJAS_FISICAS') {
+        showAlert(
+          `⛔ Foto incorrecta — la imagen muestra <strong>cajas físicas</strong>, no una guía de despacho.\n\n` +
+          `Cambia a la pestaña <strong>📦 Conteo Cajas</strong> para registrar cajas físicas.\n\n` +
+          `Las guías de despacho son documentos de papel (PPD packing list, Labcorp Master Packing List).`,
+          'err'
+        );
+        document.getElementById('save-btn').disabled = true;
+        document.getElementById('save-icon').textContent = '⛔';
+        document.getElementById('save-text').textContent = '⛔ Foto de cajas — usa la pestaña 📦 Conteo Cajas';
+        document.getElementById('result-section').style.display = 'block';
+        return;
+      }
+      // También bloquear si viene array cajas o barcodes en kit_names
+      const esCajas = parsed.cajas ||
+        (parsed.kit_names && parsed.kit_names.some(k => k.barcode !== undefined || k.qty_rec !== undefined));
+      if (esCajas) {
+        showAlert(
+          `⛔ Foto incorrecta para este modo.\n\n` +
+          `Estás en <strong>📄 Guía de Despacho</strong> pero subiste una foto de <strong>cajas físicas</strong>.\n\n` +
+          `Las fotos de cajas físicas solo se aceptan en la pestaña <strong>📦 Conteo Cajas</strong>.\n` +
+          `Las guías de despacho son documentos de papel (PPD packing list, Labcorp Master Packing List, etc.).`,
+          'err'
+        );
+        document.getElementById('save-btn').disabled = true;
+        document.getElementById('save-icon').textContent = '⛔';
+        document.getElementById('save-text').textContent = '⛔ Foto incorrecta — cambia a la pestaña 📦 Conteo Cajas';
+        document.getElementById('result-section').style.display = 'block';
+        return;
+      }
+      // Verificación adicional: la guía DEBE tener kit_names
+      if (!parsed.kit_names || parsed.kit_names.length === 0) {
+        showAlert(
+          `⛔ No se detectó ningún kit en el documento.\n\n` +
+          `Asegúrate de fotografiar la <strong>guía de despacho</strong> (documento de papel con lista de kits y cantidades).\n` +
+          `Si tienes cajas físicas, usa la pestaña <strong>📦 Conteo Cajas</strong>.`,
+          'err'
+        );
+        document.getElementById('save-btn').disabled = true;
+        document.getElementById('save-icon').textContent = '⛔';
+        document.getElementById('save-text').textContent = '⛔ Documento no reconocido como guía de despacho';
+        document.getElementById('result-section').style.display = 'block';
+        return;
+      }
+    }
+
+    if (currentMode === 'cajas') {
+      // En modo CAJAS solo se acepta array "cajas" con barcodes individuales
+      // Si viene kit_names con qty (sin barcodes) → foto de guía de despacho
+      const esGuia = !parsed.cajas &&
+        parsed.kit_names &&
+        parsed.kit_names.some(k => k.qty !== undefined && k.barcode === undefined && k.qty_rec === undefined);
+      if (esGuia) {
+        showAlert(
+          `⛔ Foto incorrecta para este modo.\n\n` +
+          `Estás en <strong>📦 Conteo Cajas</strong> pero subiste una foto de una <strong>guía de despacho</strong>.\n\n` +
+          `Cambia a la pestaña <strong>📄 Guía de Despacho</strong> para registrar el documento.\n` +
+          `Las fotos de cajas deben mostrar las <strong>cajas físicas con sus etiquetas</strong>.`,
+          'err'
+        );
+        document.getElementById('save-btn').disabled = true;
+        document.getElementById('save-icon').textContent = '⛔';
+        document.getElementById('save-text').textContent = '⛔ Foto incorrecta — cambia a la pestaña 📄 Guía de Despacho';
+        document.getElementById('result-section').style.display = 'block';
+        return;
+      }
+    }
+
+    // ── Validación protocolo en guía vs protocolo seleccionado ───────────
+    if (currentMode === 'guia' && parsed.protocol_en_guia) {
+      const protoGuia = String(parsed.protocol_en_guia).trim().toUpperCase();
+      const protoSel  = String(protocolo).trim().toUpperCase();
+      const coincide  = protoSel.includes(protoGuia) || protoGuia.includes(protoSel);
+
+      if (!coincide) {
+        // Buscar a qué investigador pertenece el protocolo de la guía
+        let duenho = null;
+        for (const [inv, areas] of Object.entries(DB)) {
+          for (const protos of Object.values(areas)) {
+            if (protos.some(p => p.toUpperCase() === protoGuia || protoGuia.includes(p.toUpperCase()))) {
+              duenho = inv; break;
+            }
+          }
+          if (duenho) break;
+        }
+        const msgDuenho = duenho
+          ? `Esta guía pertenece a <strong>${duenho}</strong>.`
+          : `El protocolo <strong>${parsed.protocol_en_guia}</strong> no está registrado en ningún investigador.`;
+        showAlert(
+          `⛔ La guía NO corresponde al investigador seleccionado.\n\n` +
+          `Seleccionado: <strong>${investigador}</strong> · ${protocolo}\n` +
+          `Protocolo en la guía: <strong>${parsed.protocol_en_guia}</strong>\n\n` +
+          `${msgDuenho}`,
+          'err'
+        );
+        document.getElementById('save-btn').disabled = true;
+        document.getElementById('save-icon').textContent = '⛔';
+        document.getElementById('save-text').textContent = 'No se puede guardar — guía no corresponde al investigador';
+      }
+    }
+
+    // ── Validación protocolo en caja vs protocolo seleccionado ────────────
+    if (currentMode === 'cajas' && parsed.protocol_en_caja) {
+      const protoCaja     = String(parsed.protocol_en_caja).trim().toUpperCase();
+      const protoSel      = String(protocolo).trim().toUpperCase();
+      // Verificar si el protocolo de la caja está contenido en el seleccionado o viceversa
+      const coincide = protoSel.includes(protoCaja) || protoCaja.includes(protoSel);
+      if (!coincide) {
+        // Buscar a qué investigador pertenece el protocolo de la caja
+        let duenho = null;
+        for (const [inv, areas] of Object.entries(DB)) {
+          for (const protos of Object.values(areas)) {
+            if (protos.some(p => p.toUpperCase() === protoCaja || protoCaja.includes(p.toUpperCase()))) {
+              duenho = inv;
+              break;
+            }
+          }
+          if (duenho) break;
+        }
+        const msgDuenho = duenho
+          ? `Esta caja pertenece a <strong>${duenho}</strong>.`
+          : `El protocolo <strong>${parsed.protocol_en_caja}</strong> no corresponde a ningún investigador registrado.`;
+        showAlert(
+          `⛔ Caja no corresponde al investigador seleccionado.\n` +
+          `Seleccionado: ${investigador} · ${protocolo}\n` +
+          `Protocolo en caja: ${parsed.protocol_en_caja}\n` +
+          `${msgDuenho}`,
+          'err'
+        );
+        // Bloquear el botón de guardar
+        document.getElementById('save-btn').disabled = true;
+        document.getElementById('save-icon').textContent = '⛔';
+        document.getElementById('save-text').textContent = 'No se puede guardar — caja no corresponde al investigador';
+      }
+    }
+
+    // Si es guía, guardar qty por kit para comparar con conteo de cajas
+    if (currentMode === 'guia' && parsed.kit_names) {
+      const guiaKey = 'uaib_guia_' + protocolo;
+      const guiaMap = {};
+      parsed.kit_names.forEach(k => {
+        guiaMap[k.kit_name] = { qty: k.qty };
+      });
+      sessionStorage.setItem(guiaKey, JSON.stringify(guiaMap));
+      sessionStorage.setItem('uaib_last_protocolo', protocolo);
+    }
+
+    document.getElementById('result-time').textContent = elapsed + 's';
+    renderResult(parsed);
+    document.getElementById('result-section').style.display = 'block';
+
+    // ── Debug panel ──
+    const kitsDebug = parsed.cajas || parsed.kit_names || parsed.kits_egresados || [];
+    const debugLines = kitsDebug.map((k,i) => {
+      const normExp = (k.exp_date && k.exp_date !== 'null') ? toSheetDate(k.exp_date) : '⚠ SIN FECHA';
+      const bc = k.barcode ? `  barcode → ${k.barcode}` : '';
+      const qty = k.qty !== undefined ? `  qty     → ${k.qty}` : `  qty_rec → ${k.qty_rec ?? k.qty_egresado ?? 1}`;
+      return `Caja ${i+1}: "${k.kit_name}"\n${qty}\n  exp_date → ${normExp}${bc}`;
+    }).join('\n\n');
+    const dp = document.getElementById('debug-panel');
+    if (dp) dp.textContent = debugLines || '(sin kits)';
+    const dd = document.getElementById('debug-details');
+    if (dd && kitsDebug.length) dd.open = true;
+
+  } catch(err) {
+    showAlert('Error: ' + err.message, 'err');
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('analyze-btn').disabled = false;
+  }
+}
+
+// ── RENDER RESULT ────────────────────────────────────────
+function renderResult(data) {
+  const body = document.getElementById('result-body');
+  const pill = document.getElementById('status-pill');
+  body.innerHTML = '';
+
+  if (data.error) {
+    pill.className = 'status-pill err';
+    document.getElementById('status-text').textContent = 'Imagen ilegible';
+    body.innerHTML = `<div class="sec-title">Error de lectura</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-key">Error</div><div class="info-val" style="color:var(--red)">${data.error}</div></div>
+        <div class="info-item"><div class="info-key">Detalle</div><div class="info-val">${data.detalle||'—'}</div></div>
+      </div>`;
+    return;
+  }
+
+  pill.className = 'status-pill ok';
+
+  // Study info
+  body.innerHTML += `<div class="sec-title">Datos del estudio</div>
+    <div class="info-grid">
+      <div class="info-item"><div class="info-key">Investigador</div><div class="info-val">${data.investigador}</div></div>
+      <div class="info-item"><div class="info-key">Área</div><div class="info-val">${data.area||'—'}</div></div>
+      <div class="info-item"><div class="info-key">Protocolo</div><div class="info-val" style="font-family:var(--mono);font-size:12px">${data.protocolo}</div></div>
+      ${data.guia_despacho ? `<div class="info-item"><div class="info-key">Guía despacho</div><div class="info-val" style="font-family:var(--mono);font-size:12px">${data.guia_despacho}</div></div>` : ''}
+    </div>`;
+
+  if (currentMode === 'guia') {
+    const kits = data.kit_names || [];
+    document.getElementById('status-text').textContent = kits.length + ' kit' + (kits.length!==1?'s':'') + ' en guía → INGRESOS Y EGRESOS';
+    body.innerHTML += `<div class="sec-title">Kits registrados desde guía de despacho</div>`;
+    kits.forEach((k, idx) => {
+      body.innerHTML += `
+      <div class="kit-card" id="kitcard-${idx}" style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center">
+        <div>
+          <div class="kit-name">${k.kit_name}</div>
+          <div class="kit-meta">
+            ${k.qty!==undefined?`<span class="kit-tag qty">QTY: ${k.qty}</span>`:''}
+            ${k.lote?`<span class="kit-tag lote">Lote: ${k.lote}</span>`:''}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <div class="kit-qty-big">${k.qty||'—'}</div>
+          <div style="display:flex;gap:5px">
+            <button
+              id="bc-no-${idx}"
+              onclick="setKitBcMode(${idx},'sin')"
+              style="padding:4px 9px;border-radius:6px;border:1.5px solid var(--gray200);background:var(--gray50);font-size:11px;font-weight:600;cursor:pointer;color:var(--gray500);font-family:var(--font);transition:all .2s;white-space:nowrap"
+              title="Sin código de barra — registra qty completa en 1 fila">
+              📦 Sin BC
+            </button>
+            <button
+              id="bc-yes-${idx}"
+              onclick="setKitBcMode(${idx},'con')"
+              style="padding:4px 9px;border-radius:6px;border:1.5px solid var(--gray200);background:var(--gray50);font-size:11px;font-weight:600;cursor:pointer;color:var(--gray500);font-family:var(--font);transition:all .2s;white-space:nowrap"
+              title="Con código de barra — crea ${k.qty} fila(s) placeholder para escanear">
+              🔢 Con BC
+            </button>
+          </div>
+        </div>
+      </div>`;
+    });
+    // Inicializar mapa de modo por kit
+    window._kitBcModes = {};
+    updateSaveBtnFromKits();
+
+  } else if (currentMode === 'cajas') {
+    // Nueva lógica: cada entrada es una caja individual con su barcode
+    const cajas = data.cajas || data.kit_names || [];
+
+    // Agrupar por kit_name para comparar con guía
+    const guiaKey = 'uaib_guia_' + data.protocolo;
+    let guiaMap = null;
+    const saved = sessionStorage.getItem(guiaKey);
+    if (saved) { try { guiaMap = JSON.parse(saved); } catch {} }
+
+    // Contar por kit_name
+    const conteo = {};
+    cajas.forEach(c => {
+      conteo[c.kit_name] = (conteo[c.kit_name] || 0) + 1;
+    });
+
+    let totalOk = 0, totalFail = 0;
+    if (guiaMap) {
+      Object.entries(conteo).forEach(([name, cnt]) => {
+        const qGuia = guiaMap[name] ? parseInt(guiaMap[name].qty) : null;
+        if (qGuia !== null) { cnt === qGuia ? totalOk++ : totalFail++; }
+      });
+    }
+
+    // Status
+    document.getElementById('status-text').textContent = guiaMap
+      ? (totalFail > 0 ? `${totalFail} discrepancia(s) con guía` : `${cajas.length} caja(s) — coinciden con guía`)
+      : `${cajas.length} caja(s) registradas individualmente`;
+
+    // Banner comparación
+    if (guiaMap) {
+      const allOk = totalFail === 0;
+      body.innerHTML += `<div class="summary-bar ${allOk?'all-ok':'has-error'}">
+        <span>${allOk?'✅':'❌'}</span>
+        <span>${allOk ? `Conteo coincide con guía (${cajas.length} cajas)` : `${totalFail} tipo(s) no coincide(n) — verifica antes de guardar`}</span>
+      </div>`;
+    } else {
+      body.innerHTML += `<div class="guia-banner">ℹ️ <strong>Sin guía de referencia</strong> — analiza primero la guía para comparar.</div>`;
+    }
+
+    body.innerHTML += `<div class="sec-title">Cajas individuales (${cajas.length} total)</div>`;
+
+    // Alerta si hay barcodes ilegibles o parciales
+    const cajasProblema = cajas.filter(c =>
+      !c.barcode || c.barcode === '' ||
+      String(c.barcode).includes('?') ||
+      String(c.barcode).toUpperCase().includes('ILEGIBLE')
+    );
+    if (cajasProblema.length > 0) {
+      body.innerHTML += `<div class="alert alert-warn show" style="margin-bottom:10px">
+        ⚠️ ${cajasProblema.length} caja(s) con código de barra ilegible o parcial —
+        <strong>toma una foto más cercana de esas etiquetas</strong> o corrígelo manualmente en Sheets.
+      </div>`;
+    }
+
+    // Tabla compacta: una fila por caja con barcode
+    const filasHtml = cajas.map((c, i) => {
+      const exp = (c.exp_date && c.exp_date !== 'null') ? toSheetDate(c.exp_date) : '';
+      const qGuia = guiaMap && guiaMap[c.kit_name] ? parseInt(guiaMap[c.kit_name].qty) : null;
+      const qReal = conteo[c.kit_name] || 1;
+      const match = qGuia !== null ? (qReal === qGuia) : null;
+      return `<tr style="border-bottom:1px solid var(--gray100)">
+        <td style="padding:5px 8px;font-size:11px;color:var(--gray500);text-align:center;font-family:var(--mono)">${i+1}</td>
+        <td style="padding:5px 8px;font-size:12px;font-weight:600;color:var(--gray900)">${c.kit_name}</td>
+        <td style="padding:5px 8px;font-size:12px;font-family:var(--mono);color:${exp?'var(--green)':'var(--red)'};font-weight:600;text-align:center">${exp||'⚠ Sin fecha'}</td>
+        <td style="padding:5px 8px;font-size:11px;font-family:var(--mono);color:var(--gray500);text-align:right">${c.barcode||'—'}</td>
+      </tr>`;
+    }).join('');
+
+    body.innerHTML += `
+      <div style="background:var(--blue-faint);border:1.5px solid #93c5fd;border-radius:var(--r-sm);padding:10px 14px;margin-bottom:12px;overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="border-bottom:2px solid #93c5fd">
+            <th style="padding:4px 8px;font-size:10px;color:#1e40af;text-align:center;width:30px">#</th>
+            <th style="padding:4px 8px;font-size:10px;color:#1e40af;text-align:left">KIT</th>
+            <th style="padding:4px 8px;font-size:10px;color:#1e40af;text-align:center">FECHA VENC.</th>
+            <th style="padding:4px 8px;font-size:10px;color:#1e40af;text-align:right">CÓDIGO DE BARRA</th>
+          </tr></thead>
+          <tbody>${filasHtml}</tbody>
+        </table>
+      </div>`;
+
+  } else if (currentMode === 'retiro') {
+    const kits = data.kits_egresados || [];
+    document.getElementById('status-text').textContent = kits.length + ' kit' + (kits.length!==1?'s':'') + ' retirados → EGRESOS';
+    body.innerHTML += `<div class="sec-title">Kits retirados</div>`;
+    kits.forEach(k => {
+      body.innerHTML += `<div class="kit-card">
+        <div>
+          <div class="kit-name">${k.kit_name}</div>
+          <div class="kit-meta">
+            ${k.motivo?`<span class="kit-tag motivo">${k.motivo}</span>`:''}
+            ${k.lote?`<span class="kit-tag lote">Lote: ${k.lote}</span>`:''}
+          </div>
+          <div>${expBadge(k.exp_date)}</div>
+        </div>
+        <div>
+          <div class="kit-qty-big red">${k.qty_egresado||'—'}</div>
+          <div class="kit-qty-lbl">retirados</div>
+        </div>
+      </div>`;
+    });
+  }
+
+  if (data.observaciones && data.observaciones !== 'null') {
+    body.innerHTML += `<div class="sec-title">Observaciones</div>
+      <div class="info-item"><div class="info-val">${data.observaciones}</div></div>`;
+  }
+}
+
+// Normaliza cualquier fecha al formato Google Sheets inglés: DD-Mon-YYYY
+// Maneja guiones normales, largos (–), espacios, mayúsculas/minúsculas
+// Ej: "31–JUL–2026", "31-jul-2026", "30 Jun 2028", "31-Oct-2028" → "31-Jul-2026", "30-Jun-2028"
+function toSheetDate(d) {
+  if (!d || d === 'null' || d === '') return '';
+  const MONTHS = {
+    // inglés mayúscula → capitalizado
+    JAN:'Jan', FEB:'Feb', MAR:'Mar', APR:'Apr', MAY:'May', JUN:'Jun',
+    JUL:'Jul', AUG:'Aug', SEP:'Sep', OCT:'Oct', NOV:'Nov', DEC:'Dec',
+    // español → inglés capitalizado
+    ENE:'Jan', FEB:'Feb', MAR:'Mar', ABR:'Apr', MAY:'May', JUN:'Jun',
+    JUL:'Jul', AGO:'Aug', SEP:'Sep', OCT:'Oct', NOV:'Nov', DIC:'Dec'
+  };
+  try {
+    // Reemplaza guiones largos (–, —, \u2013, \u2014) y espacios por guión normal
+    const clean = d.trim()
+      .replace(/[\u2013\u2014\u2012]/g, '-')  // em/en dash → hyphen
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .toUpperCase();
+    const parts = clean.split('-');
+    if (parts.length !== 3) return d;
+    const [dd, mmm, yyyy] = parts;
+    const mon = MONTHS[mmm] || (mmm.charAt(0) + mmm.slice(1).toLowerCase());
+    return `${dd.padStart(2,'0')}-${mon}-${yyyy}`;
+  } catch { return d; }
+}
+
+function limpiarHistorial() {
+  const n = Object.keys(JSON.parse(localStorage.getItem('uaib_barcodes') || '{}')).length;
+  if (n === 0) { alert('El historial ya está vacío.'); return; }
+  if (confirm(`¿Borrar el historial local de ${n} código(s) de barra?\n\nEsto NO borra datos en Google Sheets — solo el registro local de este navegador.`)) {
+    localStorage.removeItem('uaib_barcodes');
+    showAlert('✅ Historial limpiado — puedes registrar cajas sin restricciones.', 'warn');
+  }
+}
+
+function expBadge(d) {
+  if (!d || d==='null') return '<span style="font-size:11px;color:var(--gray400)">Sin fecha registrada</span>';
+  try {
+    const M={JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11,
+             ENE:0,ABR:3,AGO:7,DIC:11};
+    // Normaliza guiones largos y espacios antes de parsear
+    const norm = d.replace(/[\u2013\u2014\u2012]/g,'-').replace(/\s+/g,'-').replace(/-+/g,'-');
+    const p = norm.toUpperCase().split('-');
+    const exp=new Date(parseInt(p[2]),M[p[1]]??0,parseInt(p[0]));
+    const days=Math.floor((exp-new Date())/86400000);
+    const cls=days<0?'badge-bad':days<60?'badge-bad':days<90?'badge-warn':'badge-ok';
+    const lbl=days<0?'VENCIDO':days+' días restantes';
+    return `<span class="badge-exp ${cls}">📅 ${d} · ${lbl}</span>`;
+  } catch { return `<span class="badge-exp badge-ok">${d}</span>`; }
+}
+
+// ── PER-KIT BARCODE MODE ──────────────────────────────────
+function setKitBcMode(idx, mode) {
+  window._kitBcModes = window._kitBcModes || {};
+  window._kitBcModes[idx] = mode;
+
+  const btnNo  = document.getElementById('bc-no-'  + idx);
+  const btnYes = document.getElementById('bc-yes-' + idx);
+  const card   = document.getElementById('kitcard-' + idx);
+  if (!btnNo || !btnYes) return;
+
+  if (mode === 'sin') {
+    btnNo.style.cssText  += ';background:#ecfdf5;border-color:#059669;color:#059669';
+    btnYes.style.cssText += ';background:var(--gray50);border-color:var(--gray200);color:var(--gray500)';
+    if (card) card.style.borderColor = '#86efac';
+  } else {
+    btnYes.style.cssText += ';background:#eff6ff;border-color:#2563eb;color:#2563eb';
+    btnNo.style.cssText  += ';background:var(--gray50);border-color:var(--gray200);color:var(--gray500)';
+    if (card) card.style.borderColor = '#93c5fd';
+  }
+  updateSaveBtnFromKits();
+}
+
+function updateSaveBtnFromKits() {
+  const kits = (currentResult && currentResult.kit_names) || [];
+  if (kits.length === 0) return;
+  const modes = window._kitBcModes || {};
+  const pendientes = kits.filter((_, i) => !modes[i]).length;
+  const btn = document.getElementById('save-btn');
+  if (!btn) return;
+  if (pendientes > 0) {
+    btn.disabled = true;
+    document.getElementById('save-icon').textContent = '☝️';
+    document.getElementById('save-text').textContent =
+      pendientes === kits.length
+        ? 'Elige 📦 Sin BC o 🔢 Con BC en cada kit'
+        : `Faltan ${pendientes} kit(s) sin elegir`;
+  } else {
+    btn.disabled = false;
+    const hayCon = Object.values(modes).some(m => m === 'con');
+    const haySin = Object.values(modes).some(m => m === 'sin');
+    const icono = hayCon && haySin ? '📊' : hayCon ? '🔢' : '📦';
+    document.getElementById('save-icon').textContent = icono;
+    document.getElementById('save-text').textContent = 'Registrar en Google Sheets';
+  }
+}
+
+// ── SAVE TO SHEETS ───────────────────────────────────────
+async function saveToSheets() {
+  if (!config.sheetsUrl) { showAlert('Configura la URL del Apps Script primero (botón ⚙ arriba).'); return; }
+  if (!currentResult) return;
+
+  // Advertir si hay kits sin fecha de vencimiento (solo aplica en conteo de cajas y retiro)
+  if (currentMode !== 'guia') {
+    const kitsArr = currentResult.kit_names || currentResult.kits_egresados || [];
+    const sinFecha = kitsArr.filter(k =>
+      !k.exp_date || k.exp_date === 'null' || k.exp_date === ''
+    );
+    if (sinFecha.length > 0) {
+      const nombres = sinFecha.map(k => k.kit_name).join(', ');
+      const cont = confirm(
+        `⚠️ ${sinFecha.length} kit(s) sin fecha de vencimiento:\n${nombres}\n\n¿Deseas guardar igual?`
+      );
+      if (!cont) return;
+    }
+  }
+
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  document.getElementById('save-icon').textContent = '⏳';
+  document.getElementById('save-text').textContent  = 'Registrando...';
+
+  const { investigador, area, protocolo } = getSel();
+  const usuario = sessionStorage.getItem('uaib_user') || 'Desconocido';
+  const m = MODES[currentMode];
+
+  // ── Verificación guía previa: solo informativa, nunca bloquea ───────────
+  // El Apps Script maneja internamente si hay o no placeholder pendiente.
+
+  // ── Verificación PRE-GUARDADO: barcodes ya registrados localmente ────────
+  // SOLO INFORMATIVO — el Apps Script es quien decide si hay duplicados reales
+  if (currentMode === 'cajas') {
+    const savedBarcodes = JSON.parse(localStorage.getItem('uaib_barcodes') || '{}');
+    const duplicadosLocales = [];
+    const cajasArr2 = currentResult.cajas || currentResult.kit_names || [];
+    cajasArr2.forEach(c => {
+      const bc = String(c.barcode || '').trim();
+      if (bc && !bc.includes('?') && !bc.toUpperCase().includes('ILEGIBLE')) {
+        if (savedBarcodes[bc]) duplicadosLocales.push({ kit_name: c.kit_name, barcode: bc });
+      }
+    });
+    if (duplicadosLocales.length > 0) {
+      const lista = duplicadosLocales.map(d => `• ${d.kit_name} · ${d.barcode}`).join('\n');
+      const continuar = confirm(
+        `⚠️ Kit ya ingresado a bodega\n\n${duplicadosLocales.length} código(s) detectados en historial local:\n${lista}\n\n¿Es un ingreso nuevo y deseas continuar?\n→ Aceptar: guarda igual (el servidor verificará)\n→ Cancelar: no guardar`
+      );
+      if (!continuar) {
+        btn.disabled = false;
+        resetSaveBtn();
+        return;
+      }
+    }
+  }
+
+  // Guía: kit_names con qty
+  //   - IQVIA_INVOICE → ingreso_directo (1 fila por kit, qty completo, sin barcode)
+  //   - Resto         → ingreso_guia (N placeholders que esperan barcode)
+  // Cajas: array "cajas" con una entrada por caja individual + barcode
+  // Retiro: kits_egresados
+  const kitsArr = currentResult.cajas || currentResult.kit_names || currentResult.kits_egresados || [];
+  kitsArr.forEach(k => {
+    if (k.exp_date && k.exp_date !== 'null' && k.exp_date !== '') {
+      k.exp_date = toSheetDate(k.exp_date);
+    } else {
+      k.exp_date = '';
+    }
+  });
+
+  // Determinar tipo de envío por kit según elección individual del usuario:
+  //   'sin' → ingreso_directo: 1 fila con qty completa
+  //   'con' → ingreso_guia:    1 placeholder por unidad (se completa en Conteo Cajas)
+  let tipoEnvio = m.tipo;
+  if (currentMode === 'guia') {
+    const modes = window._kitBcModes || {};
+    const kitsAll = currentResult.kit_names || [];
+    // Verificar que todos tienen modo elegido
+    const sinElegir = kitsAll.filter((_, i) => !modes[i]);
+    if (sinElegir.length > 0) {
+      showAlert('Elige 📦 Sin BC o 🔢 Con BC en cada kit antes de guardar.', 'warn');
+      const btnX = document.getElementById('save-btn');
+      btnX.disabled = false;
+      return;
+    }
+    // Separar kits por modo
+    const kitsSin = kitsAll.filter((_, i) => modes[i] === 'sin');
+    const kitsCon = kitsAll.filter((_, i) => modes[i] === 'con');
+
+    // Enviar en hasta 2 requests (uno por tipo)
+    let totalRegistros = 0;
+    for (const [grupo, tipoGrupo] of [[kitsSin,'ingreso_directo'],[kitsCon,'ingreso_guia']]) {
+      if (grupo.length === 0) continue;
+      const datosGrupo = { ...currentResult, kit_names: grupo };
+      const payloadGrupo = {
+        tipo:         tipoGrupo,
+        datos:        encodeURIComponent(JSON.stringify(datosGrupo)),
+        usuario:      encodeURIComponent(usuario),
+        investigador: encodeURIComponent(investigador),
+        area:         encodeURIComponent(area),
+        protocolo:    encodeURIComponent(protocolo),
+        kits_json:    encodeURIComponent(JSON.stringify(grupo))
+      };
+      grupo.forEach((k, i) => {
+        payloadGrupo[`kit_${i}_name`] = encodeURIComponent(k.kit_name || '');
+        payloadGrupo[`kit_${i}_qty`]  = String(k.qty || 1);
+      });
+      payloadGrupo['kit_count'] = String(grupo.length);
+      const bodyGrupo = Object.entries(payloadGrupo).map(([k,v]) => k+'='+v).join('&');
+      try {
+        const rg = await fetch(config.sheetsUrl, {
+          method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'},
+          body: bodyGrupo, redirect:'follow'
+        });
+        const tg = await rg.text();
+        let jg = null; try { jg = JSON.parse(tg); } catch {}
+        if (jg && jg.ok) totalRegistros += (jg.registros || 0);
+      } catch { /* continuar con el otro grupo */ }
+    }
+
+    const btn2 = document.getElementById('save-btn');
+    btn2.className = 'save-btn saved';
+    document.getElementById('save-icon').textContent = '✓';
+    document.getElementById('save-text').textContent = `✓ Registrado · ${totalRegistros} fila(s) en INGRESOS Y EGRESOS`;
+    return; // salir — ya enviamos todo
+  }
+
+  const datosObj = { ...currentResult };
+
+  // Construir payload como objeto plano (se enviará vía POST form-encoded)
+  const payload = {
+    tipo:         tipoEnvio,
+    datos:        encodeURIComponent(JSON.stringify(datosObj)),
+    usuario:      encodeURIComponent(usuario),
+    investigador: encodeURIComponent(investigador),
+    area:         encodeURIComponent(area),
+    protocolo:    encodeURIComponent(protocolo),
+    kits_json:    encodeURIComponent(JSON.stringify(kitsArr))
+  };
+  // Params individuales por kit (compatibilidad extra)
+  kitsArr.forEach((k, i) => {
+    payload[`kit_${i}_name`]     = encodeURIComponent(k.kit_name    || '');
+    payload[`kit_${i}_qty`]      = String(k.qty || k.qty_rec || k.qty_egresado || 0);
+    payload[`kit_${i}_exp_date`] = encodeURIComponent(k.exp_date    || '');
+  });
+  payload['kit_count'] = String(kitsArr.length);
+
+  // Usar POST para evitar límite de URL (~2000 chars) con payloads grandes
+  const formBody = Object.entries(payload).map(([k,v]) => k + '=' + v).join('&');
+
+  try {
+    const resp = await fetch(config.sheetsUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formBody,
+      redirect: 'follow'
+    });
+    const txt = await resp.text();
+    let r = null;
+    try { r = JSON.parse(txt); } catch {}
+
+    if (r?.ok) {
+      // ── Advertencia si el script reportó 0 filas escritas ────────────
+      if (r.registros === 0 && r.omitidos > 0 && currentMode === 'guia') {
+        btn.className = 'save-btn error';
+        document.getElementById('save-icon').textContent = '⚠️';
+        document.getElementById('save-text').textContent = `⚠️ Script OK pero 0 filas escritas — ${r.omitidos} kit(s) omitidos`;
+        showAlert(
+          `⚠️ El script respondió OK pero <strong>no escribió ninguna fila</strong>.<br><br>` +
+          `Causa probable: ya existen registros pendientes para estos kits en Google Sheets.<br><br>` +
+          `Revisa la hoja INGRESOS Y EGRESOS: si los kits ya tienen filas con QTY Guía=1 sin barcode, ` +
+          `pasa directo al <strong>Conteo de Cajas</strong>.`,
+          'err'
+        );
+        return;
+      }
+      if (r.registros === 0 && currentMode === 'guia') {
+        btn.className = 'save-btn error';
+        document.getElementById('save-icon').textContent = '⚠️';
+        document.getElementById('save-text').textContent = '⚠️ 0 filas registradas — revisa Google Sheets';
+        showAlert(
+          `⚠️ El script no escribió ninguna fila.<br><br>` +
+          `Posibles causas:<br>` +
+          `• El protocolo o kits no coinciden con los esperados<br>` +
+          `• Error en el Apps Script — revisa los permisos de implementación`,
+          'err'
+        );
+        return;
+      }
+      btn.className = 'save-btn saved';
+      document.getElementById('save-icon').textContent = '✓';
+      document.getElementById('save-text').textContent =
+      `Registrado en hoja ${m.sheet}` + (r.registros ? ` · ${r.registros} fila(s)` : '');
+
+      // Mostrar respuesta raw del script en el debug panel
+      const dpRaw = document.getElementById('debug-panel');
+      if (dpRaw) {
+        dpRaw.textContent = JSON.stringify(r, null, 2);
+        const dd2 = document.getElementById('debug-details');
+        if (dd2) dd2.open = true;
+      }
+
+      // Guardar barcodes en localStorage para detección local futura
+      if (currentMode === 'cajas') {
+        const savedBarcodes = JSON.parse(localStorage.getItem('uaib_barcodes') || '{}');
+        const cajasGuardadas = currentResult.cajas || currentResult.kit_names || [];
+        cajasGuardadas.forEach(c => {
+          const bc = String(c.barcode || '').trim();
+          if (bc && !bc.includes('?') && !bc.toUpperCase().includes('ILEGIBLE')) {
+            savedBarcodes[bc] = { kit_name: c.kit_name, fecha: new Date().toLocaleDateString('es-CL') };
+          }
+        });
+        localStorage.setItem('uaib_barcodes', JSON.stringify(savedBarcodes));
+      }
+
+      // Mostrar alerta si hay barcodes sin guía previa (rechazados)
+      if (r.sin_guia && r.sin_guia.length > 0) {
+        const lista2 = r.sin_guia.map(d => `• ${d.kit_name} — ${d.barcode}`).join('\n');
+        showAlert(
+          `⛔ ${r.sin_guia.length} caja(s) rechazada(s) — no tienen guía de despacho previa (col E vacía):\n${lista2}\n\nIngresa primero la guía de despacho para estos kits en la hoja INGRESOS Y EGRESOS.`,
+          'err'
+        );
+      }
+
+      // Mostrar alerta si hay barcodes duplicados
+      if (r.duplicados && r.duplicados.length > 0) {
+        const lista = r.duplicados.map(d => `• ${d.kit_name} — código ${d.barcode}`).join('\n');
+        showAlert(
+          `⚠️ Kit ya ingresado a bodega (${r.duplicados.length} duplicado${r.duplicados.length > 1 ? 's' : ''} omitido${r.duplicados.length > 1 ? 's' : ''}):\n${lista}`,
+          'warn'
+        );
+      }
+    } else {
+      throw new Error(r?.error || 'Sin respuesta del script');
+    }
+  } catch(err) {
+    // Fallback no-cors (cuando hay bloqueo CORS en el primer intento)
+    try {
+      await fetch(config.sheetsUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formBody,
+        mode: 'no-cors'
+      });
+      btn.className = 'save-btn saved';
+      document.getElementById('save-icon').textContent = '✓';
+      document.getElementById('save-text').textContent = `Enviado a hoja ${m.sheet}`;
+      // Guardar barcodes localmente aunque no podamos leer la respuesta
+      if (currentMode === 'cajas') {
+        const savedBarcodes = JSON.parse(localStorage.getItem('uaib_barcodes') || '{}');
+        const cajasGuardadas = currentResult.cajas || currentResult.kit_names || [];
+        cajasGuardadas.forEach(c => {
+          const bc = String(c.barcode || '').trim();
+          if (bc && !bc.includes('?') && !bc.toUpperCase().includes('ILEGIBLE')) {
+            savedBarcodes[bc] = { kit_name: c.kit_name, fecha: new Date().toLocaleDateString('es-CL') };
+          }
+        });
+        localStorage.setItem('uaib_barcodes', JSON.stringify(savedBarcodes));
+      }
+    } catch {
+      btn.className = 'save-btn error';
+      btn.disabled = false;
+      document.getElementById('save-icon').textContent = '✕';
+      document.getElementById('save-text').textContent = 'Error: ' + err.message;
+    }
+  }
+}
+
+function resetSaveBtn() {
+  const b = document.getElementById('save-btn');
+  if (!b) return;
+  b.className = 'save-btn'; b.disabled = false;
+  b.onclick = saveToSheets;
+  b.innerHTML = '<span id="save-icon">📊</span><span id="save-text">Registrar en Google Sheets</span>';
+}
+
+// ── MODAL ────────────────────────────────────────────────
+function openModal() {
+  document.getElementById('sheets-url').value = config.sheetsUrl;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+function saveConfig() {
+  const url = document.getElementById('sheets-url').value.trim();
+  config.sheetsUrl = url;
+  localStorage.setItem('uaib_sheets_url', url);
+  closeModal();
+}
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+
+
+// ── BODEGA RESUMEN DATA ──────────────────────────────────
+const BODEGA_DATA = [{"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "EGD AND BIOPSY KIT", "exp": "30-Oct-2026", "recibido": 3, "ingresado": 3, "eliminado": -1, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "HIV SCREENING", "exp": "01-Dec-2025", "recibido": 2, "ingresado": 2, "eliminado": -3, "total": -1, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT T-4 PREGNANCY", "exp": "01-Dec-2025", "recibido": 10, "ingresado": 10, "eliminado": -6, "total": 4, "status": "VENCIDO"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT T-U2 UNCHELED", "exp": "31-May-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT T2 VISIT 2", "exp": "07-Jun-2026", "recibido": 8, "ingresado": 8, "eliminado": 0, "total": 8, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT T4", "exp": "31-May-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT T5", "exp": "31-May-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT T6", "exp": "31-May-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT T7", "exp": "31-May-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT T8", "exp": "31-May-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT T9 V9 EOT", "exp": "31-May-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "KIT TU1 ET", "exp": "31-May-2026", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "PGX WHOLE BLOOD", "exp": "31-Jan-2026", "recibido": 0, "ingresado": 0, "eliminado": -6, "total": -6, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "SAFETY FOLLOWUP", "exp": "31-May-2026", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "T-CELL SUBSETS", "exp": "31-Dec-2025", "recibido": 0, "ingresado": 0, "eliminado": -3, "total": -3, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "DRI17963", "kit": "URINE COLLECTION KIT", "exp": "30-Nov-2027", "recibido": 6, "ingresado": 6, "eliminado": 0, "total": 6, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "M16-066", "kit": "INTESTINAL BIOPSIES", "exp": "31-Dec-2050", "recibido": 23, "ingresado": 23, "eliminado": 0, "total": 23, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "M16-066", "kit": "KIT T-20 VSS3", "exp": "01-Dec-2025", "recibido": 0, "ingresado": 0, "eliminado": -5, "total": -5, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "M16-066", "kit": "KIT T-20 VSS3", "exp": "31-Aug-2026", "recibido": 9, "ingresado": 9, "eliminado": 0, "total": 9, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "M16-066", "kit": "KIT T4 WEEKS 24", "exp": "03-Mar-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "VENCIDO"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "M16-066", "kit": "KIT T4 WEEKS 24", "exp": "06-Dec-2025", "recibido": 0, "ingresado": 0, "eliminado": -4, "total": -4, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "M16-066", "kit": "KIT T4 WEEKS 24", "exp": "31-May-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "M16-066", "kit": "KIT T5 WEEKS 48", "exp": "31-Jul-2026", "recibido": 7, "ingresado": 7, "eliminado": 0, "total": 7, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Carlos Valenzuela", "area": "Gastroenterología", "proto": "M16-066", "kit": "KIT U RETEST", "exp": "31-May-2026", "recibido": 9, "ingresado": 9, "eliminado": 0, "total": 9, "status": "POR VENCER"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Bulk: RD25", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Bulk: SS5C", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "EOT", "exp": "30-Jun-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "HCV MONITORING KIT", "exp": "31-Jul-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: 1", "exp": "Sin fecha", "recibido": 3, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: 2", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: 3", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: 4", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: 5", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: 6", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: T-1", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: T-3", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: T-4", "exp": "Sin fecha", "recibido": 4, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: T-5", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: T-6", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "Kit Type: U-1", "exp": "Sin fecha", "recibido": 5, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "LAB ABNORMALITIES", "exp": "30-Jun-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "LAB ABNORMALITIES", "exp": "31-Oct-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "SKIN BIOPSY", "exp": "22-Jan-2027", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "UNSCHEDULED", "exp": "30-Jun-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "UNSCHEDULED", "exp": "31-Oct-2026", "recibido": 5, "ingresado": 5, "eliminado": 0, "total": 5, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "VISIT 1 SCREENING", "exp": "30-Jun-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "VISIT 1 SCREENING", "exp": "31-Oct-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "VISIT 2 BASELINE", "exp": "30-Jun-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "VISIT 3 WEEK 1", "exp": "30-Sep-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "VISIT 4 WEEK 2", "exp": "30-Sep-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "VISIT 5 WEEK 4", "exp": "30-Jun-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "DRI19220", "kit": "VISIT 7 WEEK 8", "exp": "30-Jun-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "EFC18419", "kit": "SCREENING WEEK -4", "exp": "30-Jun-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "EFC18419", "kit": "UNSCHEDULED", "exp": "31-May-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "POR VENCER"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "EFC18419", "kit": "VISIT 2 WEEK 0", "exp": "31-May-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "EFC18419", "kit": "VISIT 4 WEEK 4", "exp": "03-Jun-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "POR VENCER"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "EFC18419", "kit": "VISIT 8 WEEK 12", "exp": "03-Jun-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Gel Pack-Ambient Shipper Gel Wrap White/Clear", "exp": "Sin fecha", "recibido": 28, "ingresado": 28, "eliminado": 0, "total": 28, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type A2", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type A4", "exp": "30-Jun-2026", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type A4", "exp": "30-Jun-2028", "recibido": 6, "ingresado": 6, "eliminado": 0, "total": 6, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type B2", "exp": "28-AUG-2028", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type B4", "exp": "28-Jul-2028", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type B4", "exp": "28-Jun-2028", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type B4", "exp": "31-Oct-2028", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type C1-3", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type C2", "exp": "30-Jun-2028", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type C2", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type C4", "exp": "08-Jun-2028", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type C4", "exp": "30-Jun-2028", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type C4", "exp": "31-Oct-2028", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type D2", "exp": "30-Jun-2028", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type D2", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type D4", "exp": "28-AUG-2028", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type D4", "exp": "30-Jun-2028", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type E2", "exp": "31-Oct-2028", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type E2", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type E4", "exp": "30-Jun-2028", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type E4", "exp": "31-Oct-2028", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type F2", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type G2", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type G4", "exp": "28-AUG-2028", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type H2", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type HBV-HCV CONF 2", "exp": "Sin fecha", "recibido": 3, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type HBV-HCV CONF 4", "exp": "31-Oct-2028", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type HIV RNA2", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type NIS 4", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type QFT 2", "exp": "11-AUG-2028", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type QFT 3", "exp": "11-AUG-2028", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type QFT 3", "exp": "31-Aug-2028", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type UNS 2", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Kit Type UNS 4", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Hugo Larraín", "area": "Dermatología", "proto": "LTS17367", "kit": "Requisition Forms PRIMARY", "exp": "Sin fecha", "recibido": 5, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "CYCLE 1 DAY 15", "exp": "31-Dec-2026", "recibido": 1, "ingresado": 1, "eliminado": -1, "total": 0, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "CYCLE 2 DAY 1", "exp": "31-Aug-2026", "recibido": 1, "ingresado": 1, "eliminado": -1, "total": 0, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type 1-2", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type 1-5", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type 3", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type 4", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type: 1-5", "exp": "Sin fecha", "recibido": 8, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type: 2", "exp": "Sin fecha", "recibido": 3, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type: 3", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type: 4", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type: 5", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type: T-2", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type: T-4", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type: T-6", "exp": "Sin fecha", "recibido": 5, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Pablo Merino", "area": "Oncología", "proto": "CO44657", "kit": "Kit Type: U", "exp": "Sin fecha", "recibido": 3, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 1 SCREENING V1", "exp": "01-Sep-2025", "recibido": 3, "ingresado": 3, "eliminado": -4, "total": -1, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 1 SCREENING V1", "exp": "08-Apr-2026", "recibido": 6, "ingresado": 6, "eliminado": 0, "total": 6, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 2 V2", "exp": "01-Sep-2025", "recibido": 1, "ingresado": 1, "eliminado": -1, "total": 0, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 2 V2", "exp": "08-Apr-2026", "recibido": 8, "ingresado": 8, "eliminado": 0, "total": 8, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 3 V3", "exp": "01-Sep-2025", "recibido": 1, "ingresado": 1, "eliminado": -1, "total": 0, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 4 V3", "exp": "31-May-2026", "recibido": 6, "ingresado": 6, "eliminado": 0, "total": 6, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 5 V4", "exp": "01-Sep-2025", "recibido": 3, "ingresado": 3, "eliminado": -3, "total": 0, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 5 V4", "exp": "08-Apr-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 7 V6", "exp": "08-Apr-2026", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT 9 V8", "exp": "08-Apr-2026", "recibido": 8, "ingresado": 8, "eliminado": 0, "total": 8, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT DILI", "exp": "01-Sep-2025", "recibido": 1, "ingresado": 1, "eliminado": -1, "total": 0, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT FU/EOS", "exp": "01-Sep-2025", "recibido": 1, "ingresado": 1, "eliminado": -2, "total": -1, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT T-2 EOT", "exp": "01-Sep-2025", "recibido": 4, "ingresado": 4, "eliminado": -4, "total": 0, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT U RETEST", "exp": "01-Sep-2025", "recibido": 1, "ingresado": 1, "eliminado": -1, "total": 0, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "1378-0020", "kit": "KIT U RETEST", "exp": "08-Apr-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit A1-AM/P1/SCREEN", "exp": "31-Jul-2026", "recibido": 6, "ingresado": 6, "eliminado": 0, "total": 6, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit A1-AM/P1/SCREEN", "exp": "31-May-2026", "recibido": 8, "ingresado": 8, "eliminado": 0, "total": 8, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit B1-AM/P1/D1", "exp": "31-Jul-2026", "recibido": 8, "ingresado": 8, "eliminado": 0, "total": 8, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit B1-AM/P1/D1", "exp": "31-May-2026", "recibido": 7, "ingresado": 7, "eliminado": 0, "total": 7, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit C1-AM/P1/W16-216", "exp": "31-Jul-2026", "recibido": 9, "ingresado": 9, "eliminado": 0, "total": 9, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit D1-AM/P1/W24", "exp": "31-Jul-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit H1-AM/P1/EOP1", "exp": "31-Jul-2026", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit H1-AM/P1/EOP1", "exp": "31-May-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit I1-AM/SFU/EOS", "exp": "30-Sep-2026", "recibido": 6, "ingresado": 6, "eliminado": 0, "total": 6, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit K1-AM/UNSCHED", "exp": "31-Aug-2026", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20220196", "kit": "Kit K1-AM/UNSCHED", "exp": "31-May-2026", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20230227", "kit": "Kit A1-AM/SCREEN", "exp": "31-May-2026", "recibido": 8, "ingresado": 8, "eliminado": 0, "total": 8, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20230227", "kit": "Kit B1-AM/D1", "exp": "31-May-2026", "recibido": 5, "ingresado": 5, "eliminado": 0, "total": 5, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20230227", "kit": "Kit E1-AM/EOP1", "exp": "31-May-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "POR VENCER"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20230227", "kit": "Kit F1-AM/SFU/EOS", "exp": "30-Sep-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "20230227", "kit": "Kit H1-AM/UNSCHED", "exp": "30-Sep-2026", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Bulk: 1LSP", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Bulk: DCPL", "exp": "Sin fecha", "recibido": 25, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Bulk: SSC4", "exp": "Sin fecha", "recibido": 10, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Bulk: SUPK", "exp": "Sin fecha", "recibido": 10, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: 1", "exp": "Sin fecha", "recibido": 10, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: 2", "exp": "Sin fecha", "recibido": 5, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: 3", "exp": "Sin fecha", "recibido": 5, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: T-1", "exp": "Sin fecha", "recibido": 11, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: T-2", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: T-3", "exp": "Sin fecha", "recibido": 2, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: T-4", "exp": "Sin fecha", "recibido": 3, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: T-5", "exp": "Sin fecha", "recibido": 3, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: T-6", "exp": "Sin fecha", "recibido": 1, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: T-7", "exp": "Sin fecha", "recibido": 7, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: U", "exp": "Sin fecha", "recibido": 6, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "Kit Type: U-1", "exp": "Sin fecha", "recibido": 7, "ingresado": 0, "eliminado": 0, "total": 0, "status": "PENDIENTE INGRESO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "MINIMAL SAFETY TESTING", "exp": "01-Dec-2026", "recibido": 7, "ingresado": 7, "eliminado": 0, "total": 7, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "OPTIONAL EXPLOR BIOMARER FOR FUTURE USE", "exp": "31-Dec-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "PTDV/EOTV", "exp": "01-Dec-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "RESCREEN/BACK-UP/UNSCHEDULED", "exp": "30-Nov-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "RETEST K+/CREAT/(EGFR) NT-PROBNP", "exp": "01-Dec-2026", "recibido": 5, "ingresado": 5, "eliminado": 0, "total": 5, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "UNSCHEDULED PK", "exp": "31-Dec-2026", "recibido": 2, "ingresado": 2, "eliminado": 0, "total": 2, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "VISIT 1 SCREENING", "exp": "01-Dec-2026", "recibido": 8, "ingresado": 8, "eliminado": 0, "total": 8, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "VISIT 12-15 FUV", "exp": "01-Dec-2026", "recibido": 1, "ingresado": 1, "eliminado": 0, "total": 1, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "D6402C00012", "kit": "VISIT 2 RANDOMIZATION", "exp": "01-Dec-2026", "recibido": 3, "ingresado": 3, "eliminado": 0, "total": 3, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "SCREENING", "exp": "30-Jun-2026", "recibido": 6, "ingresado": 6, "eliminado": 0, "total": 6, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "SCREENING", "exp": "31-Dec-2025", "recibido": 0, "ingresado": 0, "eliminado": -1, "total": -1, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "UNSCH/RETEST", "exp": "30-Jun-2026", "recibido": 5, "ingresado": 5, "eliminado": 0, "total": 5, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "UNSCH/RETEST", "exp": "31-Dec-2025", "recibido": 0, "ingresado": 0, "eliminado": -1, "total": -1, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "Y1-D1", "exp": "30-Jun-2026", "recibido": 5, "ingresado": 5, "eliminado": 0, "total": 5, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "Y1-D1", "exp": "31-Dec-2025", "recibido": 0, "ingresado": 0, "eliminado": -1, "total": -1, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "Y1-D30", "exp": "30-Jun-2026", "recibido": 4, "ingresado": 4, "eliminado": 0, "total": 4, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "Y1-D30", "exp": "31-Dec-2025", "recibido": 0, "ingresado": 0, "eliminado": -2, "total": -2, "status": "ELIMINADO DE BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "Y1-M12/Y2-M24", "exp": "30-Jun-2026", "recibido": 6, "ingresado": 6, "eliminado": 0, "total": 6, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "Y1-M6/Y2-M18/Y3-M30", "exp": "30-Jun-2026", "recibido": 6, "ingresado": 6, "eliminado": 0, "total": 6, "status": "INGRESADO A BODEGA"}, {"inv": "Dr. Álex Villablanca", "area": "Cardiología", "proto": "LILAC/ANT 10", "kit": "Y1-M6/Y2-M18/Y3-M30", "exp": "31-Dec-2025", "recibido": 0, "ingresado": 0, "eliminado": -2, "total": -2, "status": "ELIMINADO DE BODEGA"}];
+
+function initDashPanel() {
+  const invSel = document.getElementById('dash-inv');
+  invSel.innerHTML = '<option value="">-- Seleccionar --</option>';
+  const invs = [...new Set(BODEGA_DATA.map(r => r.inv))].sort();
+  invs.forEach(inv => {
+    const o = document.createElement('option');
+    o.value = inv; o.textContent = inv;
+    invSel.appendChild(o);
+  });
+  document.getElementById('dash-proto').disabled = true;
+  document.getElementById('dash-proto').innerHTML = '<option value="">-- Seleccionar --</option>';
+  document.getElementById('dash-table-wrap').style.display = 'none';
+  resetDashKpis();
+}
+
+function resetDashKpis() {
+  document.getElementById('dash-kpis').innerHTML =
+    '<div class="kpi-card" style="grid-column:1/-1;padding:28px 20px;border:2px dashed var(--gray200)">' +
+    '<div style="font-size:38px;margin-bottom:10px">&#128269;</div>' +
+    '<div style="font-size:14px;font-weight:600;color:var(--gray700)">Selecciona investigador y protocolo</div>' +
+    '<div style="font-size:12px;color:var(--gray400);margin-top:5px">para ver el estado de existencias en bodega</div>' +
+    '</div>';
+}
+
+function onDashInvChange() {
+  const inv = document.getElementById('dash-inv').value;
+  const protoSel = document.getElementById('dash-proto');
+  protoSel.innerHTML = '<option value="">-- Seleccionar --</option>';
+  if (!inv) {
+    protoSel.disabled = true;
+    document.getElementById('dash-table-wrap').style.display = 'none';
+    resetDashKpis();
+    return;
+  }
+  const protos = [...new Set(BODEGA_DATA.filter(r => r.inv === inv).map(r => r.proto))].sort();
+  protos.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p; o.textContent = p;
+    protoSel.appendChild(o);
+  });
+  protoSel.disabled = false;
+  document.getElementById('dash-table-wrap').style.display = 'none';
+  resetDashKpis();
+}
+
+function renderDashTable() {
+  const inv   = document.getElementById('dash-inv').value;
+  const proto = document.getElementById('dash-proto').value;
+  if (!inv || !proto) {
+    document.getElementById('dash-table-wrap').style.display = 'none';
+    resetDashKpis();
+    return;
+  }
+  const data = BODEGA_DATA
+    .filter(r => r.inv === inv && r.proto === proto)
+    .sort(function(a,b){ return a.kit.localeCompare(b.kit) || a.exp.localeCompare(b.exp); });
+
+  // Consolidate by kit name (sum across all exp dates)
+  const kitMap = {};
+  data.forEach(function(r) {
+    if (!kitMap[r.kit]) {
+      kitMap[r.kit] = { kit: r.kit, recibido: 0, ingresado: 0, eliminado: 0, total: 0, status: r.status };
+    }
+    kitMap[r.kit].recibido  += r.recibido;
+    kitMap[r.kit].ingresado += r.ingresado;
+    kitMap[r.kit].eliminado += r.eliminado;
+    kitMap[r.kit].total     += r.total;
+    // Use worst status
+    var order = { 'VENCIDO':0,'POR VENCER':1,'ELIMINADO DE BODEGA':2,'PENDIENTE INGRESO A BODEGA':3,'INGRESADO A BODEGA':4 };
+    if ((order[r.status]||99) < (order[kitMap[r.kit].status]||99)) kitMap[r.kit].status = r.status;
+  });
+  const consolidated = Object.values(kitMap).sort(function(a,b){ return a.kit.localeCompare(b.kit); });
+
+  const totalKits  = consolidated.length;
+  const totalStock = consolidated.reduce(function(s,r){ return s + (r.total > 0 ? r.total : 0); }, 0);
+  const alerts     = consolidated.filter(r => r.status === 'POR VENCER' || r.status === 'VENCIDO').length;
+  const pendientes = consolidated.filter(r => r.status === 'PENDIENTE INGRESO A BODEGA').length;
+
+  document.getElementById('dash-kpis').innerHTML =
+    '<div class="kpi-card c-teal"><div class="kpi-num">'+totalKits+'</div><div class="kpi-lbl">Tipos de Kit</div></div>' +
+    '<div class="kpi-card c-green"><div class="kpi-num">'+totalStock+'</div><div class="kpi-lbl">Unidades en Stock</div></div>' +
+    '<div class="kpi-card c-amber"><div class="kpi-num">'+alerts+'</div><div class="kpi-lbl">Alerta Vencimiento</div></div>' +
+    '<div class="kpi-card c-purple"><div class="kpi-num">'+pendientes+'</div><div class="kpi-lbl">Pendiente Ingreso</div></div>';
+
+  function badge(s) {
+    if (s === 'INGRESADO A BODEGA')         return '<span class="badge badge-ok">En bodega</span>';
+    if (s === 'POR VENCER')                 return '<span class="badge badge-warn">Por vencer</span>';
+    if (s === 'VENCIDO')                    return '<span class="badge badge-venc">Vencido</span>';
+    if (s === 'ELIMINADO DE BODEGA')        return '<span class="badge badge-elim">Eliminado</span>';
+    if (s === 'PENDIENTE INGRESO A BODEGA') return '<span class="badge badge-pend">Pendiente</span>';
+    return '<span class="badge badge-pend">'+s+'</span>';
+  }
+  function rowBg(s) {
+    if (s === 'VENCIDO')    return 'background:#fff8f8';
+    if (s === 'POR VENCER') return 'background:#fffdf0';
+    if (s === 'ELIMINADO DE BODEGA') return 'background:#fdf4ff';
+    return '';
+  }
+
+  var prevKit = '';
+  var html = '';
+  consolidated.forEach(function(r, idx) {
+    var isNew = r.kit !== prevKit;
+    prevKit = r.kit;
+    var borderTop = (isNew && idx > 0) ? '2px solid var(--gray200)' : 'none';
+    var kitCell = isNew
+      ? '<td class="td-kit" style="border-top:'+borderTop+'">'+r.kit+'</td>'
+      : '<td style="font-size:11px;color:var(--gray300);padding-left:22px;border-top:none">&#x21B3;</td>';
+    var elimTxt = r.eliminado < 0 ? r.eliminado : '&mdash;';
+    var totalCls = r.total > 0 ? 'pos' : r.total === 0 ? 'neu' : 'neg';
+    html += '<tr style="'+rowBg(r.status)+'">' +
+      kitCell +
+      '<td class="td-num purple">'+r.recibido+'</td>' +
+      '<td class="td-num '+totalCls+'">'+r.total+'</td>' +
+      '<td>'+badge(r.status)+'</td>' +
+      '</tr>';
+  });
+
+  document.getElementById('dash-count').textContent = totalKits + ' kit' + (totalKits !== 1 ? 's' : '');
+  document.getElementById('dash-tbody').innerHTML = html;
+  document.getElementById('dash-table-wrap').style.display = 'block';
+}
+
+
+// ── LOGIN ────────────────────────────────────────────────
+function doLogin() {
+  const id   = document.getElementById('login-user').value;
+  const pass = document.getElementById('login-pass').value.trim();
+  const err  = document.getElementById('login-err');
+  err.classList.remove('show');
+  if (!id)   { err.textContent='Selecciona tu usuario.';  err.classList.add('show'); return; }
+  if (!pass) { err.textContent='Ingresa tu contraseña.'; err.classList.add('show'); return; }
+  const cred = CREDS[id];
+  if (cred && pass === cred.clave) {
+    document.getElementById('login-overlay').style.display = 'none';
+    sessionStorage.setItem('uaib_user', cred.nombre);
+    document.getElementById('hero-sub').textContent =
+      'Bienvenida/o, ' + cred.nombre.split(' ')[0] + ' · Hospital Las Higueras';
+  } else {
+    err.textContent = 'Contraseña incorrecta.'; err.classList.add('show');
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-pass').focus();
+  }
+}
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+</script>
+</body>
+</html>
